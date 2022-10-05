@@ -1,11 +1,17 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import HomeScreen from './src/screens/HomeScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
+// import CommentsScreen from './src/screens/CommentsScreen';
+// import ProfileScreen from './src/screens/ProfileScreen';
+// import HomeScreen from './src/screens/HomeScreen';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.app}>
-      <HomeScreen />
+      {/* <HomeScreen /> */}
+      {/* <CommentsScreen /> */}
+      {/* <ProfileScreen /> */}
+      <EditProfileScreen />
     </SafeAreaView>
   );
 };

@@ -6,8 +6,9 @@ import colors from '../../theme/colors';
 
 type Props = {
   uri: string;
+  paused: boolean;
 };
-const VideoPlayer = ({uri}: Props) => {
+const VideoPlayer = ({uri, paused}: Props) => {
   const [muted, setMuted] = useState(true);
 
   return (
@@ -18,6 +19,7 @@ const VideoPlayer = ({uri}: Props) => {
         resizeMode="cover"
         repeat
         muted={muted}
+        paused={paused}
       />
       <Pressable onPress={() => setMuted(v => !v)} style={styles.muteButton}>
         <Ionicons

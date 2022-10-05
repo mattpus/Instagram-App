@@ -13,9 +13,10 @@ import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer.tsx';
 interface Props {
   post: IPost;
+  isVisible?: boolean;
 }
 
-const FeedPost = ({post}: Props) => {
+const FeedPost = ({post, isVisible}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const ToggleDescription = () => {
@@ -41,7 +42,7 @@ const FeedPost = ({post}: Props) => {
   } else if (post.video) {
     content = (
       <DoublePressable onDoublePress={toggleLike}>
-        <VideoPlayer uri={post.video} />
+        <VideoPlayer uri={post.video} paused={!isVisible} />
       </DoublePressable>
     );
   }
