@@ -47,6 +47,16 @@ allprojects {
         }
         google()
         maven { url 'https://www.jitpack.io' }
+        
+        jcenter() {
+            content {
+                 includeModule("com.yqritc", "android-scalablevideoview")
+             }
+         }
+        
+         maven {
+             // expo-camera bundles a custom com.google.android:cameraview
+             url "$rootDir/../node_modules/expo-camera/android/maven"
+         }
     }
 }
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
