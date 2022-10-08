@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/core';
 import {useForm} from 'react-hook-form';
 import {ForgotPasswordNavigationProp} from '../../../types/navigation';
+import {Auth} from 'aws-amplify';
 
 type ForgotPasswordData = {
   username: string;
@@ -14,10 +15,25 @@ type ForgotPasswordData = {
 const ForgotPasswordScreen = () => {
   const {control, handleSubmit} = useForm<ForgotPasswordData>();
   const navigation = useNavigation<ForgotPasswordNavigationProp>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSendPressed = (data: ForgotPasswordData) => {
-    console.warn(data);
-    navigation.navigate('New password');
+  const onSendPressed = async ({username}: ForgotPasswordData) => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await Auth.forgotPassword(username);
+      Alert.alert(
+        'Check your email',
+        `The code has been set to ${response.CodeDeliveryDetails.Destination}`,
+      );
+      navigation.navigate('New password');
+    } catch (e) {
+      Alert.alert('Ooops! Something went wrong', (e as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onSignInPress = () => {
@@ -38,7 +54,10 @@ const ForgotPasswordScreen = () => {
           }}
         />
 
-        <CustomButton text="Send" onPress={handleSubmit(onSendPressed)} />
+        <CustomButton
+          text={isLoading ? 'Loading...' : 'Send'}
+          onPress={handleSubmit(onSendPressed)}
+        />
 
         <CustomButton
           text="Back to Sign in"
@@ -50,6 +69,7 @@ const ForgotPasswordScreen = () => {
   );
 };
 
+export default ForgotPasswordScreen;
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
@@ -69,5 +89,3 @@ const styles = StyleSheet.create({
     color: '#FDB075',
   },
 });
-
-export default ForgotPasswordScreen;
