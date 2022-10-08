@@ -5,7 +5,8 @@ import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
 import user from '../../assets/data/user.json';
 import {useNavigation} from '@react-navigation/native';
-import {ProfileNavigationProp} from '../../navigation/types';
+import {ProfileNavigationProp} from '../../types/navigation';
+import {Auth} from 'aws-amplify';
 const ProfileHeader = () => {
   const navigation = useNavigation<ProfileNavigationProp>();
 
@@ -34,7 +35,7 @@ const ProfileHeader = () => {
           text="Edit Profile"
           onPress={() => navigation.navigate('Edit Profile')}
         />
-        <Button text="Go back " onPress={() => navigation.goBack()} />
+        <Button text="Sign Out" onPress={() => Auth.signOut()} />
       </View>
     </View>
   );
