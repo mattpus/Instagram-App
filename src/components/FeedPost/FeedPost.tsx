@@ -11,6 +11,9 @@ import {IPost} from '../../types/models';
 import DoublePressable from '../DoublePressable';
 import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer.tsx';
+import {useNavigation} from '@react-navigation/native';
+import {FeedNavigationProp} from '../../navigation/types';
+
 interface Props {
   post: IPost;
   isVisible?: boolean;
@@ -19,6 +22,16 @@ interface Props {
 const FeedPost = ({post, isVisible}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
+  const navigation = useNavigation<FeedNavigationProp>();
+
+  const navigateToUser = () => {
+    navigation.navigate('UserProfile', {userId: post.user.id});
+  };
+
+  const navigateToComments = () => {
+    navigation.navigate('Comments', {userId: post.user.id});
+  };
   const ToggleDescription = () => {
     setIsDescriptionExpanded(prevDescription => !prevDescription);
   };
@@ -56,7 +69,9 @@ const FeedPost = ({post, isVisible}: Props) => {
           }}
           style={styles.avatars}
         />
-        <Text style={styles.userName}>{post.user.username}</Text>
+        <Text onPress={navigateToUser} style={styles.userName}>
+          {post.user.username}
+        </Text>
         <Entypo name="dots-three-horizontal" style={styles.dots} />
       </View>
       {content}
@@ -102,7 +117,9 @@ const FeedPost = ({post, isVisible}: Props) => {
         <Text onPress={ToggleDescription}>
           {isDescriptionExpanded ? 'less' : 'more'}
         </Text>
-        <Text />
+        <Text onPress={navigateToComments}>
+          View all {post.nofComments} comments{' '}
+        </Text>
         {post.comments.map(comment => (
           <Comment key={comment.id} comment={comment} />
         ))}
