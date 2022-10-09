@@ -35,7 +35,13 @@ const ProfileHeader = () => {
           text="Edit Profile"
           onPress={() => navigation.navigate('Edit Profile')}
         />
-        <Button text="Sign Out" onPress={() => Auth.signOut()} />
+        <Button
+          text="Sign Out"
+          onPress={() => {
+            console.log('isee messages');
+            Auth.signOut();
+          }}
+        />
       </View>
     </View>
   );

@@ -5,12 +5,15 @@ import Amplify from 'aws-amplify';
 import config from './src/aws-exports';
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native';
 import colors from './src/theme/colors';
+import AuthContextProvider from './src/contexts/AuthContext';
 Amplify.configure(config);
 const App = () => {
   return (
-    <SafeAreaProvider>
-      <Navigation />
-    </SafeAreaProvider>
+    <AuthContextProvider>
+      <SafeAreaProvider>
+        <Navigation />
+      </SafeAreaProvider>
+    </AuthContextProvider>
   );
 };
 
