@@ -32,6 +32,7 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
         const authUser = await Auth.currentAuthenticatedUser({
           bypassCache: true,
         });
+
         setUser(authUser);
       } catch (e) {
         setUser(null);
@@ -43,6 +44,8 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
 
   useEffect(() => {
     const listener: HubCallback = data => {
+      console.log('HUB');
+      console.log(data);
       const {event} = data.payload;
       if (event === 'singOut') {
         setUser(null);

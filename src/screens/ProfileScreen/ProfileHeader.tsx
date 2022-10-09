@@ -38,7 +38,6 @@ const ProfileHeader = () => {
         <Button
           text="Sign Out"
           onPress={() => {
-            console.log('isee messages');
             Auth.signOut();
           }}
         />

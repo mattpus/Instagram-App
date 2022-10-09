@@ -1,4 +1,4 @@
-package com.instagram.newarchitecture;
+package insta.mat.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.instagram.BuildConfig;
-import com.instagram.newarchitecture.components.MainComponentsRegistry;
-import com.instagram.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import insta.mat.BuildConfig;
+import insta.mat.newarchitecture.components.MainComponentsRegistry;
+import insta.mat.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

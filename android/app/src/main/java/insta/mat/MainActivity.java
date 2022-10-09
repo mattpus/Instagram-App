@@ -1,4 +1,4 @@
-package com.instagram;
+package insta.mat;
 import expo.modules.ReactActivityDelegateWrapper;
 
 import expo.modules.ReactActivityDelegateWrapper;
@@ -16,7 +16,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "Instagram";
+    return "InstaMat";
   }
 
   @Override
