@@ -33,6 +33,7 @@ const ConfirmEmailScreen = () => {
     if (isLoading) {
       return;
     }
+    setIsLoading(true);
     try {
       await Auth.confirmSignUp(email, code);
       navigation.navigate('Sign in');

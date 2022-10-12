@@ -1,12 +1,37 @@
-import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/navigation';
 import Amplify from 'aws-amplify';
 import config from './src/aws-exports';
-import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native';
-import colors from './src/theme/colors';
+// import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native';
+// import colors from './src/theme/colors';
 import AuthContextProvider from './src/contexts/AuthContext';
+import InAppBrowser from 'react-native-inappbrowser-reborn';
+import {Linking} from 'react-native';
+
 Amplify.configure(config);
+
+const urlOpener = async (url: string, redirectUrl: string) => {
+  await InAppBrowser.isAvailable();
+  const response = await InAppBrowser.openAuth(url, redirectUrl, {
+    showTitle: false,
+    enableUrlBarHiding: true,
+    enableDefaultShare: false,
+    ephemeralWebSession: false,
+  });
+
+  if (response.type === 'success') {
+    return Linking.openURL(response.url);
+  }
+};
+
+Amplify.configure({
+  ...config,
+  oauth: {
+    ...config.oauth,
+    urlOpener,
+  },
+});
+
 const App = () => {
   return (
     <AuthContextProvider>

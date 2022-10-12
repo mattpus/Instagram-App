@@ -15,7 +15,6 @@ import {useForm} from 'react-hook-form';
 import {SignInNavigationProp} from '../../../types/navigation';
 import {Auth} from 'aws-amplify';
 import {useState} from 'react';
-import {useAuthContext} from '../../../contexts/AuthContext';
 
 type SignInData = {
   email: string;
@@ -26,16 +25,16 @@ const SignInScreen = () => {
   const {height} = useWindowDimensions();
   const navigation = useNavigation<SignInNavigationProp>();
   const [isLoading, setIsLoading] = useState(false);
+
   const {control, handleSubmit, reset} = useForm<SignInData>();
-  const {setUser} = useAuthContext();
+
   const onSignInPressed = async ({email, password}: SignInData) => {
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     try {
-      const response = await Auth.signIn(email, password);
-      setUser(response);
+      await Auth.signIn(email, password);
     } catch (e) {
       if ((e as Error).name === 'UserNotConfirmedException') {
         navigation.navigate('Confirm email', {email});
@@ -46,9 +45,6 @@ const SignInScreen = () => {
       setIsLoading(false);
       reset();
     }
-
-    // validate user
-    // navigation.navigate('Hom/prettier/eslint-plugin-prettiere');
   };
 
   const onForgotPasswordPressed = () => {
