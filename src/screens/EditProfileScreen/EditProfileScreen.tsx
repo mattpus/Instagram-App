@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
 import {useForm, Controller, Control} from 'react-hook-form';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';

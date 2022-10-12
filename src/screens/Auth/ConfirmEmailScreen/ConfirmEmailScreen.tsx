@@ -28,7 +28,7 @@ const ConfirmEmailScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation<ConfirmEmailNavigationProp>();
-  const email = watch('email');
+  const emailWatched = watch('email');
   const onConfirmPressed = async ({email, code}: ConfirmEmailData) => {
     if (isLoading) {
       return;
@@ -50,7 +50,7 @@ const ConfirmEmailScreen = () => {
 
   const onResendPress = async () => {
     try {
-      await Auth.resendSignUp(email);
+      await Auth.resendSignUp(emailWatched);
       Alert.alert('Check your email', 'The code has been sent');
     } catch (e) {
       Alert.alert('Ooops!', (e as Error).message);
