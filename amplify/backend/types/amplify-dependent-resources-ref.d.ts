@@ -20,4 +20,11 @@ export type AmplifyDependentResourcesAttributes = {
       Region: 'string';
     };
   };
+  api: {
+    Instagram: {
+      GraphQLAPIKeyOutput: 'string';
+      GraphQLAPIIdOutput: 'string';
+      GraphQLAPIEndpointOutput: 'string';
+    };
+  };
 };

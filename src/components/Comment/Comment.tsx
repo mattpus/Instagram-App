@@ -4,9 +4,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
 import {IComment} from '../../types/models';
+import {Comment as CommentType} from '../../API';
+import {DEFAULT_USER_IMAGE} from '../../conifg';
 
 type Props = {
-  comment: IComment;
+  comment: CommentType;
   details?: boolean;
 };
 const Comment = ({comment, details = false}: Props) => {
@@ -17,12 +19,16 @@ const Comment = ({comment, details = false}: Props) => {
   return (
     <View style={styles.comment}>
       {details && (
-        <Image source={{uri: comment.user.image}} style={styles.avatar} />
+        <Image
+          source={{uri: comment.User?.image || DEFAULT_USER_IMAGE}}
+          style={styles.avatar}
+        />
       )}
 
       <View style={styles.commentContainer}>
         <Text style={styles.commentText}>
-          <Text style={styles.bold}>UserName</Text> {comment.comment}
+          <Text style={styles.bold}>{comment.User?.username}</Text>{' '}
+          {comment.comment}
         </Text>
         {details && (
           <View style={styles.footer}>

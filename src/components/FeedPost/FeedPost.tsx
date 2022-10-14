@@ -7,15 +7,16 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Comment from '../Comment';
-import {IPost} from '../../types/models';
 import DoublePressable from '../DoublePressable';
 import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
+import {Post} from '../../API';
+import {DEFAULT_USER_IMAGE} from '../../conifg';
 
 interface Props {
-  post: IPost;
+  post: Post;
   isVisible?: boolean;
 }
 
@@ -26,11 +27,13 @@ const FeedPost = ({post, isVisible}: Props) => {
   const navigation = useNavigation<FeedNavigationProp>();
 
   const navigateToUser = () => {
-    navigation.navigate('UserProfile', {userId: post.user.id});
+    if (post.User) {
+      navigation.navigate('UserProfile', {userId: post.User.id});
+    }
   };
 
   const navigateToComments = () => {
-    navigation.navigate('Comments', {userId: post.user.id});
+    navigation.navigate('Comments', {postId: post.id});
   };
   const ToggleDescription = () => {
     setIsDescriptionExpanded(prevDescription => !prevDescription);
@@ -65,12 +68,12 @@ const FeedPost = ({post, isVisible}: Props) => {
       <View style={styles.header}>
         <Image
           source={{
-            uri: post.user.image,
+            uri: post.User?.image || DEFAULT_USER_IMAGE,
           }}
           style={styles.avatars}
         />
         <Text onPress={navigateToUser} style={styles.userName}>
-          {post.user.username}
+          {post.User?.username}
         </Text>
         <Entypo name="dots-three-horizontal" style={styles.dots} />
       </View>
@@ -111,7 +114,7 @@ const FeedPost = ({post, isVisible}: Props) => {
         </Text>
         {/* Post description */}
         <Text>
-          <Text style={styles.bold}>{post.user.username}</Text>{' '}
+          <Text style={styles.bold}>{post.User?.username}</Text>{' '}
           {post.description}
         </Text>
         <Text onPress={ToggleDescription}>
@@ -120,9 +123,9 @@ const FeedPost = ({post, isVisible}: Props) => {
         <Text onPress={navigateToComments}>
           View all {post.nofComments} comments{' '}
         </Text>
-        {post.comments.map(comment => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
+        {(post.Comments?.items || []).map(
+          comment => comment && <Comment key={comment.id} comment={comment} />,
+        )}
       </View>
     </View>
   );

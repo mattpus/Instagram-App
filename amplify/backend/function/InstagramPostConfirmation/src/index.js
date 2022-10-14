@@ -20,7 +20,7 @@ const modules = moduleNames.map(name => require(`./${name}`));
  *
  * @see https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html#nodejs-handler-async
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
- *
+ * 
  */
 exports.handler = async (event, context) => {
   /**
