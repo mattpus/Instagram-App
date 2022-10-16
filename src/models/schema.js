@@ -113,8 +113,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "image": {
-                    "name": "image",
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "username": {
+                    "name": "username",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -122,13 +129,6 @@ export const schema = {
                 },
                 "bio": {
                     "name": "bio",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "username": {
-                    "name": "username",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -145,20 +145,27 @@ export const schema = {
                     "name": "nofPost",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "nofFollowers": {
                     "name": "nofFollowers",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "nofFollowing": {
                     "name": "nofFollowing",
                     "isArray": false,
                     "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "image": {
+                    "name": "image",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -204,13 +211,6 @@ export const schema = {
                         "associatedWith": "User"
                     }
                 },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -234,6 +234,16 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "usersByUsername",
+                        "queryField": "usersByUsername",
+                        "fields": [
+                            "username"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -504,5 +514,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "8339d3b7f91ddd5d1b1017de0658f588"
+    "version": "e3202de5bf191c59db3c8c615574e5c0"
 };

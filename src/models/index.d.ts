@@ -29,17 +29,17 @@ export declare class Like {
 export declare class User {
   readonly id: string;
   readonly name: string;
-  readonly image?: string | null;
-  readonly bio?: string | null;
+  readonly email: string;
   readonly username?: string | null;
+  readonly bio?: string | null;
   readonly website?: string | null;
-  readonly nofPost?: number | null;
-  readonly nofFollowers?: number | null;
-  readonly nofFollowing?: number | null;
+  readonly nofPost: number;
+  readonly nofFollowers: number;
+  readonly nofFollowing: number;
+  readonly image?: string | null;
   readonly Posts?: (Post | null)[] | null;
   readonly Comments?: (Comment | null)[] | null;
   readonly Likes?: (Like | null)[] | null;
-  readonly email?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<User, UserMetaData>);

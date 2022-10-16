@@ -11,13 +11,14 @@ export const getLike = /* GraphQL */ `
       User {
         id
         name
-        image
-        bio
+        email
         username
+        bio
         website
         nofPost
         nofFollowers
         nofFollowing
+        image
         Posts {
           items {
             id
@@ -84,13 +85,14 @@ export const getLike = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -166,13 +168,14 @@ export const listLikes = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -203,13 +206,14 @@ export const listLikes = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -261,13 +265,14 @@ export const syncLikes = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -298,13 +303,14 @@ export const syncLikes = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -346,13 +352,14 @@ export const getComment = /* GraphQL */ `
       User {
         id
         name
-        image
-        bio
+        email
         username
+        bio
         website
         nofPost
         nofFollowers
         nofFollowing
+        image
         Posts {
           items {
             id
@@ -419,13 +426,14 @@ export const getComment = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -502,13 +510,14 @@ export const listComments = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -539,13 +548,14 @@ export const listComments = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -598,13 +608,14 @@ export const syncComments = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -635,13 +646,14 @@ export const syncComments = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -687,13 +699,14 @@ export const getPost = /* GraphQL */ `
       User {
         id
         name
-        image
-        bio
+        email
         username
+        bio
         website
         nofPost
         nofFollowers
         nofFollowing
+        image
         Posts {
           items {
             id
@@ -757,13 +770,14 @@ export const getPost = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -802,13 +816,14 @@ export const getPost = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -866,13 +881,14 @@ export const listPosts = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -956,13 +972,14 @@ export const syncPosts = /* GraphQL */ `
         User {
           id
           name
-          image
-          bio
+          email
           username
+          bio
           website
           nofPost
           nofFollowers
           nofFollowing
+          image
           Posts {
             nextToken
             startedAt
@@ -1026,13 +1043,14 @@ export const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       name
-      image
-      bio
+      email
       username
+      bio
       website
       nofPost
       nofFollowers
       nofFollowing
+      image
       Posts {
         items {
           id
@@ -1046,13 +1064,14 @@ export const getUser = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -1085,13 +1104,14 @@ export const getUser = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -1130,13 +1150,14 @@ export const getUser = /* GraphQL */ `
           User {
             id
             name
-            image
-            bio
+            email
             username
+            bio
             website
             nofPost
             nofFollowers
             nofFollowing
+            image
             createdAt
             updatedAt
             _version
@@ -1185,13 +1206,14 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         name
-        image
-        bio
+        email
         username
+        bio
         website
         nofPost
         nofFollowers
         nofFollowing
+        image
         Posts {
           items {
             id
@@ -1267,13 +1289,99 @@ export const syncUsers = /* GraphQL */ `
       items {
         id
         name
-        image
-        bio
+        email
         username
+        bio
         website
         nofPost
         nofFollowers
         nofFollowing
+        image
+        Posts {
+          items {
+            id
+            description
+            video
+            image
+            images
+            nofComments
+            nofLikes
+            userID
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Comments {
+          items {
+            id
+            comment
+            userID
+            postID
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Likes {
+          items {
+            id
+            userID
+            postID
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const usersByUsername = /* GraphQL */ `
+  query UsersByUsername(
+    $username: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByUsername(
+      username: $username
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        email
+        username
+        bio
+        website
+        nofPost
+        nofFollowers
+        nofFollowing
+        image
         Posts {
           items {
             id

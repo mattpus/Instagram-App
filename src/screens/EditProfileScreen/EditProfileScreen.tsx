@@ -94,7 +94,7 @@ const EditProfileScreen = () => {
   const user = data?.getUser;
 
   const [doUpdateUser, {loading: updateLoading, error: updateError}] =
-    useMutation<DeleteUserMutation, DeleteUserMutationVariables>(updateUser);
+    useMutation<UpdateUserMutation, UpdateUserMutationVariables>(updateUser);
 
   const [doDeleteUser, {loading: deleteLoading, error: deleteError}] =
     useMutation<DeleteUserMutation, DeleteUserMutationVariables>(deleteUser);
@@ -169,7 +169,7 @@ const EditProfileScreen = () => {
   return (
     <View style={styles.page}>
       <Image
-        source={{uri: selectedPhoto?.uri || user.image}}
+        source={{uri: selectedPhoto?.uri || user?.image}}
         style={styles.avatar}
       />
       <Text onPress={onChangePhoto} style={styles.textButton}>
