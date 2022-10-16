@@ -43,7 +43,7 @@ const SignInScreen = () => {
       }
     } finally {
       setIsLoading(false);
-      navigation.navigate('Home');
+
       reset();
     }
   };
