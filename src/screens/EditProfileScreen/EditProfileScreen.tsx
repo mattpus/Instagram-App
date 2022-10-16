@@ -1,17 +1,38 @@
-import {useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import {useForm, Controller, Control} from 'react-hook-form';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
-import user from '../../assets/data/user.json';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
-import {IUser} from '../../types/models';
+import {
+  DeleteUserMutation,
+  DeleteUserMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
+  UpdateUserMutation,
+  UpdateUserMutationVariables,
+  User,
+} from '../../API';
+import {useMutation, useQuery} from '@apollo/client';
+import {deleteUser, getUser, updateUser} from './queries';
+import {useAuthContext} from '../../contexts/AuthContext';
+import ApiErrorMessage from '../../components/ApiErrorMessage';
+import {useNavigation} from '@react-navigation/native';
+import {Auth} from 'aws-amplify';
 
 const URL_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
 type IEditableUserField = 'name' | 'username' | 'website' | 'bio';
-type IEditableUser = Pick<IUser, IEditableUserField>;
+type IEditableUser = Pick<User, IEditableUserField>;
 
 interface ICustomInput {
   control: Control<IEditableUser, object>;
@@ -38,7 +59,7 @@ const CustomInput = ({
           <Text style={styles.label}>{label}</Text>
           <View style={{flex: 1}}>
             <TextInput
-              value={value}
+              value={value || ''}
               onChangeText={onChange}
               onBlur={onBlur}
               placeholder={label}
@@ -62,22 +83,66 @@ const CustomInput = ({
 
 const EditProfileScreen = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<null | Asset>(null);
-  const {
-    control,
-    handleSubmit,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    formState: {errors},
-  } = useForm<IEditableUser>({
-    defaultValues: {
-      name: user.name,
-      username: user.username,
-      website: 'https://example.com',
-      bio: user.bio,
-    },
-  });
+  const {control, handleSubmit, setValue} = useForm<IEditableUser>();
+  const navigation = useNavigation();
+  const {userId, user: authUser} = useAuthContext();
 
-  const onSubmit = (data: IEditableUser) => {
-    console.log('submit', data);
+  const {data, loading, error} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {variables: {id: userId}},
+  );
+  const user = data?.getUser;
+
+  const [doUpdateUser, {loading: updateLoading, error: updateError}] =
+    useMutation<DeleteUserMutation, DeleteUserMutationVariables>(updateUser);
+
+  const [doDeleteUser, {loading: deleteLoading, error: deleteError}] =
+    useMutation<DeleteUserMutation, DeleteUserMutationVariables>(deleteUser);
+
+  useEffect(() => {
+    if (user) {
+      setValue('name', user.name);
+      setValue('username', user.username);
+      setValue('website', user.website);
+      setValue('bio', user.bio);
+    }
+  }, [user, setValue]);
+
+  const onSubmit = async (formData: IEditableUser) => {
+    await doUpdateUser({
+      variables: {
+        input: {
+          id: userId,
+          ...formData,
+          _version: user?._version,
+        },
+      },
+    });
+    navigation.goBack();
+  };
+
+  const confirmDetele = () => {
+    Alert.alert('Are you sure?', 'Deleting your user profile is permanent', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Yes, delete', style: 'destructive', onPress: startDeleting},
+    ]);
+  };
+  const startDeleting = async () => {
+    if (!user) {
+      return;
+    }
+    //delete from database
+    await doDeleteUser({
+      variables: {input: {id: userId, _version: user._version}},
+    });
+
+    //delete from cognito
+    authUser?.deleteUser(e => {
+      if (e) {
+        console.log(e);
+      }
+      Auth.signOut();
+    });
   };
   const onChangePhoto = () => {
     launchImageLibrary(
@@ -89,8 +154,18 @@ const EditProfileScreen = () => {
       },
     );
   };
-  // console.log(errors);r
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
+  if (error || updateError || deleteError) {
+    return (
+      <ApiErrorMessage
+        title="Error fetching or updating the user"
+        message={error?.message || updateError?.message || deleteError?.message}
+      />
+    );
+  }
   return (
     <View style={styles.page}>
       <Image
@@ -144,7 +219,10 @@ const EditProfileScreen = () => {
       />
 
       <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>
-        Submit
+        {updateLoading ? 'Submitting...' : 'Submit'}
+      </Text>
+      <Text onPress={handleSubmit(onSubmit)} style={styles.textButtonDanger}>
+        {deleteLoading ? 'Deleting...' : 'Delete User'}
       </Text>
     </View>
   );
@@ -168,6 +246,12 @@ const styles = StyleSheet.create({
     fontWeight: fonts.weight.semi,
     margin: 10,
   },
+  textButtonDanger: {
+    color: colors.error,
+    fontSize: fonts.size.m,
+    fontWeight: fonts.weight.semi,
+    margin: 10,
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -178,5 +262,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
+    minHeight: 50,
   },
 });

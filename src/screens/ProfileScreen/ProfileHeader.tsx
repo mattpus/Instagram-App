@@ -3,40 +3,54 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import Button from '../../components/Button';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
-import user from '../../assets/data/user.json';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileNavigationProp} from '../../types/navigation';
 import {Auth} from 'aws-amplify';
-const ProfileHeader = () => {
+import {User} from '../../API';
+import {DEFAULT_USER_IMAGE} from '../../conifg';
+import {useAuthContext} from '../../contexts/AuthContext';
+
+interface Props {
+  user: User;
+}
+
+const ProfileHeader = ({user}: Props) => {
+  const {userId} = useAuthContext();
   const navigation = useNavigation<ProfileNavigationProp>();
 
   return (
     <View style={styles.root}>
       <View style={styles.headerRow}>
-        <Image source={{uri: user.image}} style={styles.image} />
+        <Image
+          source={{uri: user.image || DEFAULT_USER_IMAGE}}
+          style={styles.image}
+        />
         <View style={styles.numberContainer}>
-          <Text style={styles.number}>22</Text>
+          <Text style={styles.number}>{user.nofPost}</Text>
           <Text style={styles.label}>Posts</Text>
         </View>
         <View style={styles.numberContainer}>
-          <Text style={styles.number}>2424</Text>
+          <Text style={styles.number}>{user.nofFollowers}</Text>
           <Text style={styles.label}>Followers</Text>
         </View>
         <View style={styles.numberContainer}>
-          <Text style={styles.number}>3434</Text>
+          <Text style={styles.number}>{user.nofFollowing}</Text>
           <Text style={styles.label}>Following</Text>
         </View>
       </View>
 
       <Text style={styles.name}>{user.name}</Text>
       <Text style={styles.bio}>{user.bio}</Text>
-      <View style={styles.buttonContainer}>
-        <Button
-          text="Edit Profile"
-          onPress={() => navigation.navigate('Edit Profile')}
-        />
-        <Button text="Sign Out" onPress={() => Auth.signOut()} />
-      </View>
+      {userId === user.id && (
+        <View style={styles.buttonContainer}>
+          <Button
+            text="Edit Profile"
+            onPress={() => navigation.navigate('Edit Profile')}
+            inline
+          />
+          <Button text="Sign Out" onPress={() => Auth.signOut()} inline />
+        </View>
+      )}
     </View>
   );
 };

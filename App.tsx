@@ -7,7 +7,7 @@ import config from './src/aws-exports';
 import AuthContextProvider from './src/contexts/AuthContext';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import {Linking} from 'react-native';
-
+import Client from './src/apollo/Client';
 Amplify.configure(config);
 
 const urlOpener = async (url: string, redirectUrl: string) => {
@@ -36,7 +36,9 @@ const App = () => {
   return (
     <AuthContextProvider>
       <SafeAreaProvider>
-        <Navigation />
+        <Client>
+          <Navigation />
+        </Client>
       </SafeAreaProvider>
     </AuthContextProvider>
   );

@@ -5,9 +5,11 @@ import fonts from '../../theme/fonts';
 import colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {UserProfileNavigationProp} from '../../types/navigation';
+import {User} from '../../API';
+import {DEFAULT_USER_IMAGE} from '../../conifg';
 
 interface Props {
-  user: IUser;
+  user: User;
 }
 
 const UserListItem = ({user}: Props) => {
@@ -17,7 +19,10 @@ const UserListItem = ({user}: Props) => {
   };
   return (
     <Pressable onPress={goToUserScreen} style={styles.root}>
-      <Image source={{uri: user.image}} style={styles.image} />
+      <Image
+        source={{uri: user.image || DEFAULT_USER_IMAGE}}
+        style={styles.image}
+      />
       <View>
         <Text style={styles.name}>{user.name}</Text>
         <Text style={styles.username}>{user.username}</Text>

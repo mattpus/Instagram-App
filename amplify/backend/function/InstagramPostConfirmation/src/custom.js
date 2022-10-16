@@ -59,6 +59,9 @@ exports.handler = async (event, context) => {
     id: sub,
     name,
     email,
+    nofPosts: 0,
+    nofFollowers: 0,
+    nofFollowing: 0,
   };
 
   //check if user exists

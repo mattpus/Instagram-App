@@ -6,10 +6,13 @@ import fonts from '../../theme/fonts';
 interface Props {
   text?: string;
   onPress?: () => void;
+  inline?: boolean;
 }
-const Button = ({text = '', onPress = () => {}}: Props) => {
+const Button = ({text = '', onPress = () => {}, inline = false}: Props) => {
   return (
-    <Pressable style={styles.container} onPress={onPress}>
+    <Pressable
+      style={[styles.container, inline ? {flex: 1} : {}]}
+      onPress={onPress}>
       <Text style={styles.text}>{text}</Text>
     </Pressable>
   );
@@ -24,7 +27,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     alignItems: 'center',
-    flex: 1,
+
     margin: 5,
   },
   text: {color: colors.black, fontWeight: fonts.weight.semi},

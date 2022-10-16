@@ -1,13 +1,37 @@
-import {FlatList} from 'react-native';
+import {ActivityIndicator, FlatList} from 'react-native';
 import React from 'react';
-import users from '../../assets/data/users.json';
 import UserListItem from '../../components/UserListItem';
+import {useQuery} from '@apollo/client';
+import {listUsers} from './queries';
+import ApiErrorMessage from '../../components/ApiErrorMessage';
+import {ListUsersQuery, ListUsersQueryVariables} from '../../API';
 
 const UserSearchScreen = () => {
+  const {data, error, loading, refetch} = useQuery<
+    ListUsersQuery,
+    ListUsersQueryVariables
+  >(listUsers);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return (
+      <ApiErrorMessage title="Error fetching users" message={error.message} />
+    );
+  }
+
+  const users = (data?.listUsers?.items || []).filter(
+    user => user && !user?._deleted,
+  );
+
   return (
     <FlatList
       data={users}
-      renderItem={({item}) => <UserListItem user={item} />}
+      renderItem={({item}) => item && <UserListItem user={item} />}
+      onRefresh={() => refetch()}
+      refreshing={loading}
     />
   );
 };

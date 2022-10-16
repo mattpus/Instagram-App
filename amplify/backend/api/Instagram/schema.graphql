@@ -2,7 +2,6 @@ type Like @model @auth(rules: [{allow: public}]) {
   id: ID!
   userID: ID! @index(name: "byUser")
   postID: ID! @index(name: "byPost")
-
   User: User @belongsTo(fields: ["userID"])
   Post: Post @belongsTo(fields: ["postID"])
 }
@@ -12,7 +11,6 @@ type Comment @model @auth(rules: [{allow: public}]) {
   comment: String!
   userID: ID! @index(name: "byUser")
   postID: ID! @index(name: "byPost")
-
   User: User @belongsTo(fields: ["userID"])
   Post: Post @belongsTo(fields: ["postID"])
 }
@@ -44,4 +42,6 @@ type User @model @auth(rules: [{allow: public}]) {
   Posts: [Post] @hasMany(indexName: "byUser", fields: ["id"])
   Comments: [Comment] @hasMany(indexName: "byUser", fields: ["id"])
   Likes: [Like] @hasMany(indexName: "byUser", fields: ["id"])
+  email: String
 }
+ 

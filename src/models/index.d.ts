@@ -39,6 +39,7 @@ export declare class User {
   readonly Posts?: (Post | null)[] | null;
   readonly Comments?: (Comment | null)[] | null;
   readonly Likes?: (Like | null)[] | null;
+  readonly email?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<User, UserMetaData>);

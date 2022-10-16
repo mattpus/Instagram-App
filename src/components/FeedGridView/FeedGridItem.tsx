@@ -1,14 +1,10 @@
 import {Image, StyleSheet, View} from 'react-native';
 import React from 'react';
-import {IPost} from '../../types/models';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
+import {Post} from '../../API';
 
-interface Props {
-  post: IPost;
-}
-
-const FeedGridItem = ({post}: Props) => {
+const FeedGridItem = ({post}: {post: Post}) => {
   return (
     <View style={styles.container}>
       <Image
