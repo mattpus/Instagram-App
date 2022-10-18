@@ -40,7 +40,7 @@ const saveUser = async user => {
     Item,
   };
   try {
-    const response = await docClient.put(params).promise();
+    await docClient.put(params).promise();
   } catch (e) {
     console.log(e);
   }

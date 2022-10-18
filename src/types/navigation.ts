@@ -3,6 +3,7 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {RouteProp} from '@react-navigation/native';
 export type RootNavigatorParamList = {
   Auth: undefined;
+  EditProfile: undefined;
   Home: undefined;
   Comments: {postId: string};
 };

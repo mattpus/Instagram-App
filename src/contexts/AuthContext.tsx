@@ -19,13 +19,14 @@ const AuthContext = createContext<AuthContextType>({
 
 const AuthContextProvider = ({children}: {children: ReactNode}) => {
   const [user, setUser] = useState<UserType>(undefined);
+  console.log('User FROM STATE IN AUTHCONTEXTPROVIDER ===>', user);
 
   const checkUser = async () => {
     try {
       const authUser = await Auth.currentAuthenticatedUser({
         bypassCache: true,
       });
-
+      console.log('authUSER FROM CHECKUSER FUNC====>', authUser);
       setUser(authUser);
     } catch (e) {
       setUser(null);
@@ -38,6 +39,7 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
 
   useEffect(() => {
     const listener: HubCallback = data => {
+      console.log('DATA FROM HUB ===>', data);
       const {event} = data.payload;
       if (event === 'singOut') {
         setUser(null);
@@ -50,7 +52,8 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
     return () => Hub.remove('auth', listener);
   }, []);
   console.log(user);
-
+  console.log('USER IN VALUE PROP IN AuthContext ', user);
+  console.log('USERID IN VALUE PROP IN AuthContext', user?.attributes?.sub);
   return (
     <AuthContext.Provider value={{user, userId: user?.attributes?.sub}}>
       {children}

@@ -371,6 +371,93 @@ export enum ModelSortDirection {
 }
 
 
+export type ModelSubscriptionLikeFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  userID?: ModelSubscriptionIDInput | null,
+  postID?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionLikeFilterInput | null > | null,
+  or?: Array< ModelSubscriptionLikeFilterInput | null > | null,
+};
+
+export type ModelSubscriptionIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionCommentFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  comment?: ModelSubscriptionStringInput | null,
+  userID?: ModelSubscriptionIDInput | null,
+  postID?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionCommentFilterInput | null > | null,
+  or?: Array< ModelSubscriptionCommentFilterInput | null > | null,
+};
+
+export type ModelSubscriptionStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionPostFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  description?: ModelSubscriptionStringInput | null,
+  video?: ModelSubscriptionStringInput | null,
+  image?: ModelSubscriptionStringInput | null,
+  images?: ModelSubscriptionStringInput | null,
+  nofComments?: ModelSubscriptionIntInput | null,
+  nofLikes?: ModelSubscriptionIntInput | null,
+  userID?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionPostFilterInput | null > | null,
+  or?: Array< ModelSubscriptionPostFilterInput | null > | null,
+};
+
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
+};
+
+export type ModelSubscriptionUserFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  email?: ModelSubscriptionStringInput | null,
+  username?: ModelSubscriptionStringInput | null,
+  bio?: ModelSubscriptionStringInput | null,
+  website?: ModelSubscriptionStringInput | null,
+  nofPost?: ModelSubscriptionIntInput | null,
+  nofFollowers?: ModelSubscriptionIntInput | null,
+  nofFollowing?: ModelSubscriptionIntInput | null,
+  image?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+};
+
 export type CreateLikeMutationVariables = {
   input: CreateLikeInput,
   condition?: ModelLikeConditionInput | null,
@@ -4113,6 +4200,10 @@ export type UsersByUsernameQuery = {
   } | null,
 };
 
+export type OnCreateLikeSubscriptionVariables = {
+  filter?: ModelSubscriptionLikeFilterInput | null,
+};
+
 export type OnCreateLikeSubscription = {
   onCreateLike?:  {
     __typename: "Like",
@@ -4279,6 +4370,10 @@ export type OnCreateLikeSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
   } | null,
+};
+
+export type OnUpdateLikeSubscriptionVariables = {
+  filter?: ModelSubscriptionLikeFilterInput | null,
 };
 
 export type OnUpdateLikeSubscription = {
@@ -4449,6 +4544,10 @@ export type OnUpdateLikeSubscription = {
   } | null,
 };
 
+export type OnDeleteLikeSubscriptionVariables = {
+  filter?: ModelSubscriptionLikeFilterInput | null,
+};
+
 export type OnDeleteLikeSubscription = {
   onDeleteLike?:  {
     __typename: "Like",
@@ -4615,6 +4714,10 @@ export type OnDeleteLikeSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
   } | null,
+};
+
+export type OnCreateCommentSubscriptionVariables = {
+  filter?: ModelSubscriptionCommentFilterInput | null,
 };
 
 export type OnCreateCommentSubscription = {
@@ -4786,6 +4889,10 @@ export type OnCreateCommentSubscription = {
   } | null,
 };
 
+export type OnUpdateCommentSubscriptionVariables = {
+  filter?: ModelSubscriptionCommentFilterInput | null,
+};
+
 export type OnUpdateCommentSubscription = {
   onUpdateComment?:  {
     __typename: "Comment",
@@ -4955,6 +5062,10 @@ export type OnUpdateCommentSubscription = {
   } | null,
 };
 
+export type OnDeleteCommentSubscriptionVariables = {
+  filter?: ModelSubscriptionCommentFilterInput | null,
+};
+
 export type OnDeleteCommentSubscription = {
   onDeleteComment?:  {
     __typename: "Comment",
@@ -5122,6 +5233,10 @@ export type OnDeleteCommentSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
   } | null,
+};
+
+export type OnCreatePostSubscriptionVariables = {
+  filter?: ModelSubscriptionPostFilterInput | null,
 };
 
 export type OnCreatePostSubscription = {
@@ -5316,6 +5431,10 @@ export type OnCreatePostSubscription = {
   } | null,
 };
 
+export type OnUpdatePostSubscriptionVariables = {
+  filter?: ModelSubscriptionPostFilterInput | null,
+};
+
 export type OnUpdatePostSubscription = {
   onUpdatePost?:  {
     __typename: "Post",
@@ -5506,6 +5625,10 @@ export type OnUpdatePostSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
   } | null,
+};
+
+export type OnDeletePostSubscriptionVariables = {
+  filter?: ModelSubscriptionPostFilterInput | null,
 };
 
 export type OnDeletePostSubscription = {
@@ -5700,6 +5823,10 @@ export type OnDeletePostSubscription = {
   } | null,
 };
 
+export type OnCreateUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
+};
+
 export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
@@ -5871,6 +5998,10 @@ export type OnCreateUserSubscription = {
   } | null,
 };
 
+export type OnUpdateUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
+};
+
 export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
@@ -6040,6 +6171,10 @@ export type OnUpdateUserSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
   } | null,
+};
+
+export type OnDeleteUserSubscriptionVariables = {
+  filter?: ModelSubscriptionUserFilterInput | null,
 };
 
 export type OnDeleteUserSubscription = {
