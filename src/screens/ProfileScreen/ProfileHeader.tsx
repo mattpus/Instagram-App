@@ -19,6 +19,7 @@ const ProfileHeader = ({user}: IProfileHeader) => {
   const DEFAULT_USER_IMAGE =
     'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const navigation = useNavigation<ProfileNavigationProp>();
+  navigation.setOptions({title: user?.username || 'Profile'});
   return (
     <View style={styles.root}>
       <View style={styles.headerRow}>

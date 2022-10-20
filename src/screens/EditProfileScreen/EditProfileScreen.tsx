@@ -20,13 +20,16 @@ import {
   UpdateUserMutation,
   UpdateUserMutationVariables,
   User,
+  UsersByUsernameQuery,
+  UsersByUsernameQueryVariables,
 } from '../../API';
-import {useMutation, useQuery} from '@apollo/client';
-import {deleteUser, getUser, updateUser} from './queries';
+import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
+import {deleteUser, getUser, updateUser, usersByUsername} from './queries';
 import {useAuthContext} from '../../contexts/AuthContext';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
 import {useNavigation} from '@react-navigation/native';
 import {Auth} from 'aws-amplify';
+import {DEFAULT_USER_IMAGE} from '../../conifg';
 
 const URL_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -91,6 +94,10 @@ const EditProfileScreen = () => {
     getUser,
     {variables: {id: userId}},
   );
+  const [getUsersByUsername] = useLazyQuery<
+    UsersByUsernameQuery,
+    UsersByUsernameQueryVariables
+  >(usersByUsername);
   const user = data?.getUser;
 
   const [doUpdateUser, {loading: updateLoading, error: updateError}] =
@@ -118,10 +125,12 @@ const EditProfileScreen = () => {
         },
       },
     });
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
-  const confirmDetele = () => {
+  const confirmDelete = () => {
     Alert.alert('Are you sure?', 'Deleting your user profile is permanent', [
       {text: 'Cancel', style: 'cancel'},
       {text: 'Yes, delete', style: 'destructive', onPress: startDeleting},
@@ -133,7 +142,7 @@ const EditProfileScreen = () => {
     }
     //delete from database
     await doDeleteUser({
-      variables: {input: {id: userId, _version: user._version}},
+      variables: {input: {id: userId, _version: user?._version}},
     });
 
     //delete from cognito
@@ -166,10 +175,28 @@ const EditProfileScreen = () => {
       />
     );
   }
+
+  const validateUsername = async (username: string) => {
+    try {
+      const response = await getUsersByUsername({variables: {username}});
+      if (response.error) {
+        Alert.alert('Failed to get user by Username');
+        return 'Failed to get user by Username';
+      }
+      const users = response.data?.usersByUsername?.items;
+      if (users && users?.length > 0 && users?.[0]?.id !== userId) {
+        return 'Username is already taken';
+      }
+    } catch (e) {
+      Alert.alert('Failed to get user by Username');
+      return 'Username is already taken';
+    }
+    return true;
+  };
   return (
     <View style={styles.page}>
       <Image
-        source={{uri: selectedPhoto?.uri || user?.image}}
+        source={{uri: selectedPhoto?.uri || user?.image || DEFAULT_USER_IMAGE}}
         style={styles.avatar}
       />
       <Text onPress={onChangePhoto} style={styles.textButton}>
@@ -191,6 +218,7 @@ const EditProfileScreen = () => {
             value: 3,
             message: 'Username should be more than 3 character',
           },
+          validate: validateUsername,
         }}
         label="Username"
       />
@@ -221,7 +249,9 @@ const EditProfileScreen = () => {
       <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>
         {updateLoading ? 'Submitting...' : 'Submit'}
       </Text>
-      <Text onPress={handleSubmit(onSubmit)} style={styles.textButtonDanger}>
+      <Text
+        onPress={handleSubmit(confirmDelete)}
+        style={styles.textButtonDanger}>
         {deleteLoading ? 'Deleting...' : 'Delete User'}
       </Text>
     </View>
