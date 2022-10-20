@@ -9,9 +9,9 @@ export const getUser = gql`
       username
       bio
       website
-      nofPost
+      nofPosts
       nofFollowers
-      nofFollowing
+      nofFollowings
       image
       createdAt
       updatedAt

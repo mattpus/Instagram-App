@@ -5,7 +5,7 @@ import {Auth} from 'aws-amplify';
 import Button from '../../components/Button';
 import {ProfileNavigationProp} from '../../types/navigation';
 import {User} from '../../API';
-import {DEFAULT_USER_IMAGE} from '../../conifg';
+
 import {useAuthContext} from '../../contexts/AuthContext';
 import fonts from '../../theme/fonts';
 import colors from '../../theme/colors';
@@ -16,6 +16,8 @@ interface IProfileHeader {
 
 const ProfileHeader = ({user}: IProfileHeader) => {
   const {userId} = useAuthContext();
+  const DEFAULT_USER_IMAGE =
+    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const navigation = useNavigation<ProfileNavigationProp>();
   return (
     <View style={styles.root}>
@@ -28,7 +30,7 @@ const ProfileHeader = ({user}: IProfileHeader) => {
 
         {/* Posts, followers, following number */}
         <View style={styles.numberContainer}>
-          <Text style={styles.numberText}>{user.nofPost}</Text>
+          <Text style={styles.numberText}>{user.nofPosts}</Text>
           <Text>Posts</Text>
         </View>
 
@@ -38,7 +40,7 @@ const ProfileHeader = ({user}: IProfileHeader) => {
         </View>
 
         <View style={styles.numberContainer}>
-          <Text style={styles.numberText}>{user.nofFollowing}</Text>
+          <Text style={styles.numberText}>{user.nofFollowings}</Text>
           <Text>Following</Text>
         </View>
       </View>

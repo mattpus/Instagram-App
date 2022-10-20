@@ -5,13 +5,14 @@ import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
 import {IComment} from '../../types/models';
 import {Comment as CommentType} from '../../API';
-import {DEFAULT_USER_IMAGE} from '../../conifg';
 
 type Props = {
   comment: CommentType;
   details?: boolean;
 };
 const Comment = ({comment, details = false}: Props) => {
+  const DEFAULT_USER_IMAGE =
+    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const [liked, setLiked] = useState(false);
   const toggleLike = () => {
     setLiked(v => !v);
@@ -20,7 +21,7 @@ const Comment = ({comment, details = false}: Props) => {
     <View style={styles.comment}>
       {details && (
         <Image
-          source={{uri: comment.User?.image || DEFAULT_USER_IMAGE}}
+          source={{uri: comment?.User?.image || DEFAULT_USER_IMAGE}}
           style={styles.avatar}
         />
       )}

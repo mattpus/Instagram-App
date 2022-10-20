@@ -141,8 +141,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "nofPost": {
-                    "name": "nofPost",
+                "nofPosts": {
+                    "name": "nofPosts",
                     "isArray": false,
                     "type": "Int",
                     "isRequired": true,
@@ -155,8 +155,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "nofFollowing": {
-                    "name": "nofFollowing",
+                "nofFollowings": {
+                    "name": "nofFollowings",
                     "isArray": false,
                     "type": "Int",
                     "isRequired": true,
@@ -514,5 +514,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "e3202de5bf191c59db3c8c615574e5c0"
+    "version": "98fef4e3d587748107631c8bf02c6b42"
 };

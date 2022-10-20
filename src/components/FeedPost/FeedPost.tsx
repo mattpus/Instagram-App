@@ -1,5 +1,5 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import fonts from '../../theme/fonts';
 import colors from '../../theme/colors';
@@ -13,7 +13,6 @@ import VideoPlayer from '../VideoPlayer.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
 import {Post} from '../../API';
-import {DEFAULT_USER_IMAGE} from '../../conifg';
 
 interface Props {
   post: Post;
@@ -23,7 +22,8 @@ interface Props {
 const FeedPost = ({post, isVisible}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-
+  const DEFAULT_USER_IMAGE =
+    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const navigation = useNavigation<FeedNavigationProp>();
 
   const navigateToUser = () => {
@@ -62,13 +62,15 @@ const FeedPost = ({post, isVisible}: Props) => {
       </DoublePressable>
     );
   }
-
+  console.log(post.User?.image);
   return (
     <View style={styles.post}>
       <View style={styles.header}>
         <Image
           source={{
-            uri: post.User?.image || DEFAULT_USER_IMAGE,
+            uri: post.User?.image?.startsWith('http')
+              ? post.User?.image
+              : DEFAULT_USER_IMAGE,
           }}
           style={styles.avatars}
         />
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   avatars: {
-    marginLeft: 10,
+    marginRight: 10,
     width: 50,
     aspectRatio: 1,
     borderRadius: 25,

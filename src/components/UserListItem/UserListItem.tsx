@@ -6,13 +6,14 @@ import colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {UserProfileNavigationProp} from '../../types/navigation';
 import {User} from '../../API';
-import {DEFAULT_USER_IMAGE} from '../../conifg';
 
 interface Props {
   user: User;
 }
 
 const UserListItem = ({user}: Props) => {
+  const DEFAULT_USER_IMAGE =
+    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const navigation = useNavigation<UserProfileNavigationProp>();
   const goToUserScreen = () => {
     navigation.navigate('UserProfile', {userId: user.id});

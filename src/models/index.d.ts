@@ -33,9 +33,9 @@ export declare class User {
   readonly username?: string | null;
   readonly bio?: string | null;
   readonly website?: string | null;
-  readonly nofPost: number;
+  readonly nofPosts: number;
   readonly nofFollowers: number;
-  readonly nofFollowing: number;
+  readonly nofFollowings: number;
   readonly image?: string | null;
   readonly Posts?: (Post | null)[] | null;
   readonly Comments?: (Comment | null)[] | null;

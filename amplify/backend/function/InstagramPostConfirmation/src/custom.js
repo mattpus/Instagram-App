@@ -1,5 +1,3 @@
-const {getFocusedRouteNameFromRoute} = require('@react-navigation/native');
-
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -61,7 +59,7 @@ exports.handler = async (event, context) => {
     email,
     nofPosts: 0,
     nofFollowers: 0,
-    nofFollowing: 0,
+    nofFollowings: 0,
   };
 
   //check if user exists

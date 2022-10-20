@@ -15,9 +15,9 @@ export const getLike = /* GraphQL */ `
         username
         bio
         website
-        nofPost
+        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
         image
         Posts {
           items {
@@ -89,9 +89,9 @@ export const getLike = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -172,9 +172,9 @@ export const listLikes = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -210,9 +210,9 @@ export const listLikes = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -269,9 +269,9 @@ export const syncLikes = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -307,9 +307,9 @@ export const syncLikes = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -356,9 +356,9 @@ export const getComment = /* GraphQL */ `
         username
         bio
         website
-        nofPost
+        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
         image
         Posts {
           items {
@@ -430,9 +430,9 @@ export const getComment = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -514,9 +514,9 @@ export const listComments = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -552,9 +552,9 @@ export const listComments = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -612,9 +612,9 @@ export const syncComments = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -650,9 +650,9 @@ export const syncComments = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -703,9 +703,9 @@ export const getPost = /* GraphQL */ `
         username
         bio
         website
-        nofPost
+        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
         image
         Posts {
           items {
@@ -774,9 +774,9 @@ export const getPost = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -820,9 +820,9 @@ export const getPost = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -885,9 +885,9 @@ export const listPosts = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -976,9 +976,9 @@ export const syncPosts = /* GraphQL */ `
           username
           bio
           website
-          nofPost
+          nofPosts
           nofFollowers
-          nofFollowing
+          nofFollowings
           image
           Posts {
             nextToken
@@ -1047,9 +1047,9 @@ export const getUser = /* GraphQL */ `
       username
       bio
       website
-      nofPost
+      nofPosts
       nofFollowers
-      nofFollowing
+      nofFollowings
       image
       Posts {
         items {
@@ -1068,9 +1068,9 @@ export const getUser = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -1108,9 +1108,9 @@ export const getUser = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -1154,9 +1154,9 @@ export const getUser = /* GraphQL */ `
             username
             bio
             website
-            nofPost
+            nofPosts
             nofFollowers
-            nofFollowing
+            nofFollowings
             image
             createdAt
             updatedAt
@@ -1210,9 +1210,9 @@ export const listUsers = /* GraphQL */ `
         username
         bio
         website
-        nofPost
+        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
         image
         Posts {
           items {
@@ -1293,9 +1293,9 @@ export const syncUsers = /* GraphQL */ `
         username
         bio
         website
-        nofPost
+        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
         image
         Posts {
           items {
@@ -1378,9 +1378,9 @@ export const usersByUsername = /* GraphQL */ `
         username
         bio
         website
-        nofPost
+        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
         image
         Posts {
           items {
