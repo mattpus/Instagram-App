@@ -1,6 +1,6 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useState} from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
+
 import fonts from '../../theme/fonts';
 import colors from '../../theme/colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -13,6 +13,7 @@ import VideoPlayer from '../VideoPlayer.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
 import {Post} from '../../API';
+import PostMenu from './PostMenu';
 
 interface Props {
   post: Post;
@@ -77,7 +78,7 @@ const FeedPost = ({post, isVisible}: Props) => {
         <Text onPress={navigateToUser} style={styles.userName}>
           {post.User?.username}
         </Text>
-        <Entypo name="dots-three-horizontal" style={styles.dots} />
+        <PostMenu post={post} />
       </View>
       {content}
       <View style={styles.footer}>
@@ -158,9 +159,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 25,
   },
-  dots: {
-    marginLeft: 'auto',
-  },
+
   iconContainer: {
     flexDirection: 'row',
     marginBottom: 5,
