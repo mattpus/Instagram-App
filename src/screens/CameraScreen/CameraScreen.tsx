@@ -10,6 +10,8 @@ import {
 } from 'expo-camera';
 import colors from '../../theme/colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
+import {CameraNavigationProp} from '../../types/navigation';
 
 const flashModes = [
   FlashMode.off,
@@ -25,14 +27,14 @@ const flashModeToIcon = {
   [FlashMode.torch]: 'highlight',
 };
 
-const PostUploadScreen = () => {
+const CameraScreen = () => {
   const [hasPermissions, setHasPermissions] = useState<boolean | null>(null);
   const [cameraType, setCameraType] = useState(CameraType.back);
   const [flash, setFlash] = useState(FlashMode.off);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const camera = useRef<Camera>(null);
-
+  const navigation = useNavigation<CameraNavigationProp>();
   useEffect(() => {
     const getPermissions = async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -107,6 +109,13 @@ const PostUploadScreen = () => {
     return <Text>No access to the camera</Text>;
   }
 
+  const navigateToCreateScreen = () => {
+    navigation.navigate('Create', {
+      video:
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    });
+  };
+
   return (
     <View style={styles.page}>
       <Camera
@@ -117,7 +126,7 @@ const PostUploadScreen = () => {
         flashMode={flash}
         onCameraReady={() => setIsCameraReady(true)}
       />
-      <View style={[styles.buttonsContainer, {top: 25}]}>
+      <View style={[styles.buttonsContainer, {top: 25, marginTop: 15}]}>
         <MaterialIcons name="close" size={30} color={colors.white} />
         <Pressable onPress={flipFlash}>
           <MaterialIcons
@@ -150,12 +159,19 @@ const PostUploadScreen = () => {
             color={colors.white}
           />
         </Pressable>
+        <Pressable onPress={navigateToCreateScreen}>
+          <MaterialIcons
+            name="arrow-forward-ios"
+            size={30}
+            color={colors.white}
+          />
+        </Pressable>
       </View>
     </View>
   );
 };
 
-export default PostUploadScreen;
+export default CameraScreen;
 
 const styles = StyleSheet.create({
   page: {

@@ -6,7 +6,7 @@ import colors from '../../theme/colors';
 
 type Props = {
   uri: string;
-  paused: boolean;
+  paused?: boolean;
 };
 const VideoPlayer = ({uri, paused}: Props) => {
   const [muted, setMuted] = useState(true);
