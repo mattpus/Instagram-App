@@ -17,6 +17,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface IPostMenu {
   post: Post;
@@ -56,12 +57,14 @@ const PostMenu = ({post}: IPostMenu) => {
   const onEditPressed = () => {
     navigation.navigate('UpdatePost', {id: post.id});
   };
+
+  const insets = useSafeAreaInsets();
   return (
     <Menu renderer={renderers.SlideInMenu} style={styles.dots}>
       <MenuTrigger>
         <Entypo name="dots-three-horizontal" />
       </MenuTrigger>
-      <MenuOptions>
+      <MenuOptions optionsContainerStyle={{paddingBottom: insets.bottom}}>
         <MenuOption onSelect={() => Alert.alert('Reporting the post')}>
           <Text style={styles.optionText}>Report</Text>
         </MenuOption>
@@ -71,9 +74,7 @@ const PostMenu = ({post}: IPostMenu) => {
               <Text style={[styles.optionText, {color: 'red'}]}>Delete</Text>
             </MenuOption>
             <MenuOption onSelect={onEditPressed}>
-              <Text style={[styles.optionText, {marginBottom: 20}]}>
-                Edit Post
-              </Text>
+              <Text style={styles.optionText}>Edit Post</Text>
             </MenuOption>
           </>
         )}

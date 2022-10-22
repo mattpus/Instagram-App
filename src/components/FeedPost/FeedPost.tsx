@@ -15,7 +15,7 @@ import {FeedNavigationProp} from '../../types/navigation';
 import {Post} from '../../API';
 import PostMenu from './PostMenu';
 
-import useLikeService from '../../services/LikeServices';
+import useLikeService from '../../services/LikeService';
 
 const DEFAULT_USER_IMAGE =
   'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';

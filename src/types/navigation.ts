@@ -43,6 +43,8 @@ export type CreateRouteProp = RouteProp<
   'Create'
 >;
 
+export type CommentsRouteProp = RouteProp<RootNavigatorParamList, 'Comments'>;
+
 export type MyProfileNavigationProp = BottomTabNavigationProp<
   BottomTabNavigatorParamList,
   'MyProfile'
@@ -56,6 +58,7 @@ export type MyProfileRouteProp = RouteProp<
 export type HomeStackNavigatorParamList = {
   Feed: undefined;
   UserProfile: {userId: string};
+  Comments: {postId: string};
   UpdatePost: {id: string};
   PostLikes: {id: string};
 };
