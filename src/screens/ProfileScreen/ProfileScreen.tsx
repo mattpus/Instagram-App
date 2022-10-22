@@ -21,7 +21,7 @@ const ProfileScreen = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {variables: {id: userId}});
-
+  const user = data?.getUser;
   if (loading) {
     return <ActivityIndicator />;
   }

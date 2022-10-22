@@ -12,26 +12,10 @@ import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
-import {
-  CreateLikeMutation,
-  CreateLikeMutationVariables,
-  DeleteLikeMutation,
-  DeleteLikeMutationVariables,
-  LikesForPostByUserQuery,
-  LikesForPostByUserQueryVariables,
-  Post,
-  UpdatePostMutation,
-  UpdatePostMutationVariables,
-} from '../../API';
+import {Post} from '../../API';
 import PostMenu from './PostMenu';
-import {useMutation, useQuery} from '@apollo/client';
-import {
-  createLike,
-  deleteLike,
-  likesForPostByUser,
-  updatePost,
-} from './queries';
-import {useAuthContext} from '../../contexts/AuthContext';
+
+import useLikeService from '../../services/LikeServices';
 
 const DEFAULT_USER_IMAGE =
   'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
@@ -43,51 +27,10 @@ interface Props {
 
 const FeedPost = ({post, isVisible}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const {userId} = useAuthContext();
   const navigation = useNavigation<FeedNavigationProp>();
-
-  const [doCreateLike] = useMutation<
-    CreateLikeMutation,
-    CreateLikeMutationVariables
-  >(createLike, {
-    variables: {input: {userID: userId, postID: post.id}},
-    refetchQueries: ['LikesForPostByUser'],
-  });
-
-  const [doDeleteLike] = useMutation<
-    DeleteLikeMutation,
-    DeleteLikeMutationVariables
-  >(deleteLike);
-
-  const [doUpdatePost] = useMutation<
-    UpdatePostMutation,
-    UpdatePostMutationVariables
-  >(updatePost);
-
-  const {data: usersLikeData} = useQuery<
-    LikesForPostByUserQuery,
-    LikesForPostByUserQueryVariables
-  >(likesForPostByUser, {
-    variables: {postID: post.id, userID: {eq: userId}},
-  });
-
-  const userLike = (usersLikeData?.LikesForPostByUser?.items || []).filter(
-    like => !like?._deleted,
-  )?.[0];
+  const {toggleLike, isLiked} = useLikeService(post);
 
   const postLikes = post.Likes?.items.filter(like => !like?._deleted) || [];
-
-  const updateNofLikes = (amount: 1 | -1) => {
-    doUpdatePost({
-      variables: {
-        input: {
-          id: post.id,
-          _version: post._version,
-          nofLikes: post.nofLikes + amount,
-        },
-      },
-    });
-  };
 
   const navigateToUser = () => {
     if (post.User) {
@@ -107,18 +50,6 @@ const FeedPost = ({post, isVisible}: Props) => {
     setIsDescriptionExpanded(prevDescription => !prevDescription);
   };
 
-  const toggleLike = () => {
-    if (userLike) {
-      //delete
-      doDeleteLike({
-        variables: {input: {id: userLike.id, _version: userLike._version}},
-      });
-      updateNofLikes(-1);
-    } else {
-      doCreateLike();
-      updateNofLikes(1);
-    }
-  };
   console.log(post.nofLikes);
   let content = null;
   if (post.image) {
@@ -163,10 +94,10 @@ const FeedPost = ({post, isVisible}: Props) => {
         <View style={styles.iconContainer}>
           <Pressable onPress={toggleLike}>
             <AntDesign
-              name={userLike ? 'heart' : 'hearto'}
+              name={isLiked ? 'heart' : 'hearto'}
               size={24}
               style={styles.icon}
-              color={userLike ? colors.accent : colors.black}
+              color={isLiked ? colors.accent : colors.black}
             />
           </Pressable>
           <Ionicons
