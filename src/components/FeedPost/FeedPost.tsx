@@ -20,11 +20,21 @@ import {
   LikesForPostByUserQuery,
   LikesForPostByUserQueryVariables,
   Post,
+  UpdatePostMutation,
+  UpdatePostMutationVariables,
 } from '../../API';
 import PostMenu from './PostMenu';
 import {useMutation, useQuery} from '@apollo/client';
-import {createLike, deleteLike, likesForPostByUser} from './queries';
+import {
+  createLike,
+  deleteLike,
+  likesForPostByUser,
+  updatePost,
+} from './queries';
 import {useAuthContext} from '../../contexts/AuthContext';
+
+const DEFAULT_USER_IMAGE =
+  'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
 
 interface Props {
   post: Post;
@@ -33,8 +43,8 @@ interface Props {
 
 const FeedPost = ({post, isVisible}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
   const {userId} = useAuthContext();
+  const navigation = useNavigation<FeedNavigationProp>();
 
   const [doCreateLike] = useMutation<
     CreateLikeMutation,
@@ -48,9 +58,11 @@ const FeedPost = ({post, isVisible}: Props) => {
     DeleteLikeMutation,
     DeleteLikeMutationVariables
   >(deleteLike);
-  const DEFAULT_USER_IMAGE =
-    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
-  const navigation = useNavigation<FeedNavigationProp>();
+
+  const [doUpdatePost] = useMutation<
+    UpdatePostMutation,
+    UpdatePostMutationVariables
+  >(updatePost);
 
   const {data: usersLikeData} = useQuery<
     LikesForPostByUserQuery,
@@ -63,6 +75,20 @@ const FeedPost = ({post, isVisible}: Props) => {
     like => !like?._deleted,
   )?.[0];
 
+  const postLikes = post.Likes?.items.filter(like => !like?._deleted) || [];
+
+  const updateNofLikes = (amount: 1 | -1) => {
+    doUpdatePost({
+      variables: {
+        input: {
+          id: post.id,
+          _version: post._version,
+          nofLikes: post.nofLikes + amount,
+        },
+      },
+    });
+  };
+
   const navigateToUser = () => {
     if (post.User) {
       navigation.navigate('UserProfile', {userId: post.User.id});
@@ -72,19 +98,28 @@ const FeedPost = ({post, isVisible}: Props) => {
   const navigateToComments = () => {
     navigation.navigate('Comments', {postId: post.id});
   };
+
+  const navigateToLikes = () => {
+    navigation.navigate('PostLikes', {id: post.id});
+  };
+
   const ToggleDescription = () => {
     setIsDescriptionExpanded(prevDescription => !prevDescription);
   };
+
   const toggleLike = () => {
     if (userLike) {
       //delete
       doDeleteLike({
         variables: {input: {id: userLike.id, _version: userLike._version}},
       });
+      updateNofLikes(-1);
     } else {
       doCreateLike();
+      updateNofLikes(1);
     }
   };
+  console.log(post.nofLikes);
   let content = null;
   if (post.image) {
     content = (
@@ -154,10 +189,21 @@ const FeedPost = ({post, isVisible}: Props) => {
           />
         </View>
         {/* Likes */}
-        <Text style={styles.text}>
-          Liked by <Text style={styles.bold}>userName</Text> and{' '}
-          <Text style={styles.bold}>{post.nofLikes} others</Text>
-        </Text>
+        {postLikes.length === 0 ? (
+          <Text> Be the first to like the post</Text>
+        ) : (
+          <Text style={styles.text} onPress={navigateToLikes}>
+            Liked by{' '}
+            <Text style={styles.bold}>{postLikes[0]?.User?.username}</Text>
+            {postLikes.length > 1 && (
+              <>
+                {' '}
+                and <Text style={styles.bold}>{post.nofLikes - 1} others</Text>
+              </>
+            )}
+          </Text>
+        )}
+
         {/* Post description */}
         <Text>
           <Text style={styles.bold}>{post.User?.username}</Text>{' '}
