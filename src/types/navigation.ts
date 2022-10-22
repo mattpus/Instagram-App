@@ -32,6 +32,10 @@ export type CameraNavigationProp = NativeStackNavigationProp<
   UploadStackNavigatorParamList,
   'Camera'
 >;
+export type HomeStackNavigationProp = NativeStackNavigationProp<
+  BottomTabNavigatorParamList,
+  'HomeStack'
+>;
 
 export type CreateNavigationProp = NativeStackNavigationProp<
   UploadStackNavigatorParamList,

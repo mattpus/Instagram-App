@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   FlatList,
-  Text,
   View,
   ViewabilityConfig,
   ViewToken,
@@ -9,17 +8,23 @@ import {
 import {useRef, useState} from 'react';
 import FeedPost from '../../components/FeedPost';
 import {useQuery} from '@apollo/client';
-import {listPosts} from './queries';
-import {ListPostsQuery, ListPostsQueryVariables} from '../../API';
+import {postsByDate} from './queries';
+import {
+  ModelSortDirection,
+  PostsByDateQuery,
+  PostsByDateQueryVariables,
+} from '../../API';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
 
 const HomeScreen = () => {
   const [activePostId, setActivePostId] = useState<string | null>(null);
-  // const [posts, setPosts] = useState([]);
-  const {data, loading, error, refetch} = useQuery<
-    ListPostsQuery,
-    ListPostsQueryVariables
-  >(listPosts);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const {data, loading, error, refetch, fetchMore} = useQuery<
+    PostsByDateQuery,
+    PostsByDateQueryVariables
+  >(postsByDate, {
+    variables: {type: 'POST', sortDirection: ModelSortDirection.DESC, limit: 1},
+  });
   // useEffect(() => {
   //   const fetchPosts = async () => {
   //     const response = await API.graphql(graphqlOperation(listPosts));
@@ -28,6 +33,17 @@ const HomeScreen = () => {
 
   //   fetchPosts();
   // }, []);
+
+  const nextToken = data?.postsByDate?.nextToken;
+
+  const loadMore = async () => {
+    if (!nextToken || isFetchingMore) {
+      return;
+    }
+    setIsFetchingMore(true);
+    await fetchMore({variables: {nextToken}});
+    setIsFetchingMore(false);
+  };
 
   const viewabilityConfig: ViewabilityConfig = {
     itemVisiblePercentThreshold: 51,
@@ -49,7 +65,9 @@ const HomeScreen = () => {
       <ApiErrorMessage title="Error fetching posts" message={error.message} />
     );
   }
-  const posts = (data?.listPosts?.items || []).filter(post => !post?._deleted);
+  const posts = (data?.postsByDate?.items || []).filter(
+    post => !post?._deleted,
+  );
   return (
     <View>
       {/* <FeedPost post={posts[3]} /> */}
@@ -63,6 +81,7 @@ const HomeScreen = () => {
         onViewableItemsChanged={onViewableItemsChanged.current}
         onRefresh={() => refetch()}
         refreshing={loading}
+        onEndReached={loadMore}
       />
     </View>
   );

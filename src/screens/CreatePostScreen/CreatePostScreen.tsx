@@ -1,15 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  Button,
-  Alert,
-} from 'react-native';
+import {View, StyleSheet, Image, TextInput, Button, Alert} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {CreateNavigationProp, CreateRouteProp} from '../../types/navigation';
+import {CreateRouteProp, HomeStackNavigationProp} from '../../types/navigation';
 import colors from '../../theme/colors';
 import {useMutation} from '@apollo/client';
 import {createPost} from './queries';
@@ -23,7 +15,7 @@ const CreatePostScreen = () => {
   const route = useRoute<CreateRouteProp>();
   const {image, images, video} = route.params;
   const {userId} = useAuthContext();
-  const navigation = useNavigation<CreateNavigationProp>();
+  const navigation = useNavigation<HomeStackNavigationProp>();
   const [doCreatePost] = useMutation<
     CreatePostMutation,
     CreatePostMutationVariables
@@ -34,6 +26,7 @@ const CreatePostScreen = () => {
       const response = await doCreatePost({
         variables: {
           input: {
+            type: 'POST',
             description,
             image,
             images,

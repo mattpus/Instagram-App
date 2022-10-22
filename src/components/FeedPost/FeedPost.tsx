@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
 import {Post} from '../../API';
 import PostMenu from './PostMenu';
+import dayjs from 'dayjs';
 
 import useLikeService from '../../services/LikeService';
 
@@ -146,6 +147,7 @@ const FeedPost = ({post, isVisible}: Props) => {
         <Text onPress={navigateToComments}>
           View all {post.nofComments} comments{' '}
         </Text>
+        <Text>{dayjs(post.createdAt).fromNow()}</Text>
         {(post.Comments?.items || []).map(
           comment => comment && <Comment key={comment.id} comment={comment} />,
         )}

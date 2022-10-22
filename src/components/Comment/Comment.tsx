@@ -5,6 +5,7 @@ import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
 import {IComment} from '../../types/models';
 import {Comment as CommentType} from '../../API';
+import dayjs from 'dayjs';
 
 type Props = {
   comment: CommentType;
@@ -33,7 +34,9 @@ const Comment = ({comment, details = false}: Props) => {
         </Text>
         {details && (
           <View style={styles.footer}>
-            <Text style={styles.footerText}>2d</Text>
+            <Text style={styles.footerText}>
+              {dayjs(comment.createdAt).fromNow()}
+            </Text>
             <Text style={styles.footerText}>5 likes</Text>
             <Text style={styles.footerText}>Reply</Text>
           </View>

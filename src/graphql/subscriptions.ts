@@ -22,6 +22,8 @@ export const onCreateLike = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -29,7 +31,6 @@ export const onCreateLike = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -41,10 +42,10 @@ export const onCreateLike = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -75,6 +76,8 @@ export const onCreateLike = /* GraphQL */ `
       }
       Post {
         id
+        createdAt
+        type
         description
         video
         image
@@ -114,10 +117,10 @@ export const onCreateLike = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -140,7 +143,6 @@ export const onCreateLike = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -174,6 +176,8 @@ export const onUpdateLike = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -181,7 +185,6 @@ export const onUpdateLike = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -193,10 +196,10 @@ export const onUpdateLike = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -227,6 +230,8 @@ export const onUpdateLike = /* GraphQL */ `
       }
       Post {
         id
+        createdAt
+        type
         description
         video
         image
@@ -266,10 +271,10 @@ export const onUpdateLike = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -292,7 +297,6 @@ export const onUpdateLike = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -326,6 +330,8 @@ export const onDeleteLike = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -333,7 +339,6 @@ export const onDeleteLike = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -345,10 +350,10 @@ export const onDeleteLike = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -379,6 +384,8 @@ export const onDeleteLike = /* GraphQL */ `
       }
       Post {
         id
+        createdAt
+        type
         description
         video
         image
@@ -418,10 +425,10 @@ export const onDeleteLike = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -444,7 +451,6 @@ export const onDeleteLike = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -462,6 +468,7 @@ export const onCreateComment = /* GraphQL */ `
   subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
     onCreateComment(filter: $filter) {
       id
+      createdAt
       comment
       userID
       postID
@@ -479,6 +486,8 @@ export const onCreateComment = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -486,7 +495,6 @@ export const onCreateComment = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -498,10 +506,10 @@ export const onCreateComment = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -532,6 +540,8 @@ export const onCreateComment = /* GraphQL */ `
       }
       Post {
         id
+        createdAt
+        type
         description
         video
         image
@@ -571,10 +581,10 @@ export const onCreateComment = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -597,13 +607,11 @@ export const onCreateComment = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -615,6 +623,7 @@ export const onUpdateComment = /* GraphQL */ `
   subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
     onUpdateComment(filter: $filter) {
       id
+      createdAt
       comment
       userID
       postID
@@ -632,6 +641,8 @@ export const onUpdateComment = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -639,7 +650,6 @@ export const onUpdateComment = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -651,10 +661,10 @@ export const onUpdateComment = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -685,6 +695,8 @@ export const onUpdateComment = /* GraphQL */ `
       }
       Post {
         id
+        createdAt
+        type
         description
         video
         image
@@ -724,10 +736,10 @@ export const onUpdateComment = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -750,13 +762,11 @@ export const onUpdateComment = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -768,6 +778,7 @@ export const onDeleteComment = /* GraphQL */ `
   subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
     onDeleteComment(filter: $filter) {
       id
+      createdAt
       comment
       userID
       postID
@@ -785,6 +796,8 @@ export const onDeleteComment = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -792,7 +805,6 @@ export const onDeleteComment = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -804,10 +816,10 @@ export const onDeleteComment = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -838,6 +850,8 @@ export const onDeleteComment = /* GraphQL */ `
       }
       Post {
         id
+        createdAt
+        type
         description
         video
         image
@@ -877,10 +891,10 @@ export const onDeleteComment = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -903,13 +917,11 @@ export const onDeleteComment = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -921,6 +933,8 @@ export const onCreatePost = /* GraphQL */ `
   subscription OnCreatePost($filter: ModelSubscriptionPostFilterInput) {
     onCreatePost(filter: $filter) {
       id
+      createdAt
+      type
       description
       video
       image
@@ -942,6 +956,8 @@ export const onCreatePost = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -949,7 +965,6 @@ export const onCreatePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -961,10 +976,10 @@ export const onCreatePost = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -996,6 +1011,7 @@ export const onCreatePost = /* GraphQL */ `
       Comments {
         items {
           id
+          createdAt
           comment
           userID
           postID
@@ -1018,6 +1034,8 @@ export const onCreatePost = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1025,13 +1043,11 @@ export const onCreatePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1064,6 +1080,8 @@ export const onCreatePost = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1071,7 +1089,6 @@ export const onCreatePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1086,7 +1103,6 @@ export const onCreatePost = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -1098,6 +1114,8 @@ export const onUpdatePost = /* GraphQL */ `
   subscription OnUpdatePost($filter: ModelSubscriptionPostFilterInput) {
     onUpdatePost(filter: $filter) {
       id
+      createdAt
+      type
       description
       video
       image
@@ -1119,6 +1137,8 @@ export const onUpdatePost = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1126,7 +1146,6 @@ export const onUpdatePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1138,10 +1157,10 @@ export const onUpdatePost = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1173,6 +1192,7 @@ export const onUpdatePost = /* GraphQL */ `
       Comments {
         items {
           id
+          createdAt
           comment
           userID
           postID
@@ -1195,6 +1215,8 @@ export const onUpdatePost = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1202,13 +1224,11 @@ export const onUpdatePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1241,6 +1261,8 @@ export const onUpdatePost = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1248,7 +1270,6 @@ export const onUpdatePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1263,7 +1284,6 @@ export const onUpdatePost = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -1275,6 +1295,8 @@ export const onDeletePost = /* GraphQL */ `
   subscription OnDeletePost($filter: ModelSubscriptionPostFilterInput) {
     onDeletePost(filter: $filter) {
       id
+      createdAt
+      type
       description
       video
       image
@@ -1296,6 +1318,8 @@ export const onDeletePost = /* GraphQL */ `
         Posts {
           items {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1303,7 +1327,6 @@ export const onDeletePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1315,10 +1338,10 @@ export const onDeletePost = /* GraphQL */ `
         Comments {
           items {
             id
+            createdAt
             comment
             userID
             postID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1350,6 +1373,7 @@ export const onDeletePost = /* GraphQL */ `
       Comments {
         items {
           id
+          createdAt
           comment
           userID
           postID
@@ -1372,6 +1396,8 @@ export const onDeletePost = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1379,13 +1405,11 @@ export const onDeletePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1418,6 +1442,8 @@ export const onDeletePost = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1425,7 +1451,6 @@ export const onDeletePost = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1440,7 +1465,6 @@ export const onDeletePost = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -1464,6 +1488,8 @@ export const onCreateUser = /* GraphQL */ `
       Posts {
         items {
           id
+          createdAt
+          type
           description
           video
           image
@@ -1496,7 +1522,6 @@ export const onCreateUser = /* GraphQL */ `
             nextToken
             startedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1508,6 +1533,7 @@ export const onCreateUser = /* GraphQL */ `
       Comments {
         items {
           id
+          createdAt
           comment
           userID
           postID
@@ -1530,6 +1556,8 @@ export const onCreateUser = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1537,13 +1565,11 @@ export const onCreateUser = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1576,6 +1602,8 @@ export const onCreateUser = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1583,7 +1611,6 @@ export const onCreateUser = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1622,6 +1649,8 @@ export const onUpdateUser = /* GraphQL */ `
       Posts {
         items {
           id
+          createdAt
+          type
           description
           video
           image
@@ -1654,7 +1683,6 @@ export const onUpdateUser = /* GraphQL */ `
             nextToken
             startedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1666,6 +1694,7 @@ export const onUpdateUser = /* GraphQL */ `
       Comments {
         items {
           id
+          createdAt
           comment
           userID
           postID
@@ -1688,6 +1717,8 @@ export const onUpdateUser = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1695,13 +1726,11 @@ export const onUpdateUser = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1734,6 +1763,8 @@ export const onUpdateUser = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1741,7 +1772,6 @@ export const onUpdateUser = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1780,6 +1810,8 @@ export const onDeleteUser = /* GraphQL */ `
       Posts {
         items {
           id
+          createdAt
+          type
           description
           video
           image
@@ -1812,7 +1844,6 @@ export const onDeleteUser = /* GraphQL */ `
             nextToken
             startedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1824,6 +1855,7 @@ export const onDeleteUser = /* GraphQL */ `
       Comments {
         items {
           id
+          createdAt
           comment
           userID
           postID
@@ -1846,6 +1878,8 @@ export const onDeleteUser = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1853,13 +1887,11 @@ export const onDeleteUser = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -1892,6 +1924,8 @@ export const onDeleteUser = /* GraphQL */ `
           }
           Post {
             id
+            createdAt
+            type
             description
             video
             image
@@ -1899,7 +1933,6 @@ export const onDeleteUser = /* GraphQL */ `
             nofComments
             nofLikes
             userID
-            createdAt
             updatedAt
             _version
             _deleted
