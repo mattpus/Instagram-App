@@ -44,7 +44,6 @@ const CreatePostScreen = () => {
           },
         },
       });
-      console.log(response);
 
       navigation.popToTop();
       navigation.navigate('HomeStack');

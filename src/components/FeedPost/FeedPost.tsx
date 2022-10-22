@@ -12,8 +12,19 @@ import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
-import {Post} from '../../API';
+import {
+  CreateLikeMutation,
+  CreateLikeMutationVariables,
+  DeleteLikeMutation,
+  DeleteLikeMutationVariables,
+  LikesForPostByUserQuery,
+  LikesForPostByUserQueryVariables,
+  Post,
+} from '../../API';
 import PostMenu from './PostMenu';
+import {useMutation, useQuery} from '@apollo/client';
+import {createLike, deleteLike, likesForPostByUser} from './queries';
+import {useAuthContext} from '../../contexts/AuthContext';
 
 interface Props {
   post: Post;
@@ -23,9 +34,34 @@ interface Props {
 const FeedPost = ({post, isVisible}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const {userId} = useAuthContext();
+
+  const [doCreateLike] = useMutation<
+    CreateLikeMutation,
+    CreateLikeMutationVariables
+  >(createLike, {
+    variables: {input: {userID: userId, postID: post.id}},
+    refetchQueries: ['LikesForPostByUser'],
+  });
+
+  const [doDeleteLike] = useMutation<
+    DeleteLikeMutation,
+    DeleteLikeMutationVariables
+  >(deleteLike);
   const DEFAULT_USER_IMAGE =
     'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const navigation = useNavigation<FeedNavigationProp>();
+
+  const {data: usersLikeData} = useQuery<
+    LikesForPostByUserQuery,
+    LikesForPostByUserQueryVariables
+  >(likesForPostByUser, {
+    variables: {postID: post.id, userID: {eq: userId}},
+  });
+
+  const userLike = (usersLikeData?.LikesForPostByUser?.items || []).filter(
+    like => !like?._deleted,
+  )?.[0];
 
   const navigateToUser = () => {
     if (post.User) {
@@ -40,7 +76,14 @@ const FeedPost = ({post, isVisible}: Props) => {
     setIsDescriptionExpanded(prevDescription => !prevDescription);
   };
   const toggleLike = () => {
-    setIsLiked(prev => !prev);
+    if (userLike) {
+      //delete
+      doDeleteLike({
+        variables: {input: {id: userLike.id, _version: userLike._version}},
+      });
+    } else {
+      doCreateLike();
+    }
   };
   let content = null;
   if (post.image) {
@@ -63,7 +106,7 @@ const FeedPost = ({post, isVisible}: Props) => {
       </DoublePressable>
     );
   }
-  console.log(post.User?.image);
+
   return (
     <View style={styles.post}>
       <View style={styles.header}>
@@ -85,10 +128,10 @@ const FeedPost = ({post, isVisible}: Props) => {
         <View style={styles.iconContainer}>
           <Pressable onPress={toggleLike}>
             <AntDesign
-              name={isLiked ? 'heart' : 'hearto'}
+              name={userLike ? 'heart' : 'hearto'}
               size={24}
               style={styles.icon}
-              color={isLiked ? colors.accent : colors.black}
+              color={userLike ? colors.accent : colors.black}
             />
           </Pressable>
           <Ionicons

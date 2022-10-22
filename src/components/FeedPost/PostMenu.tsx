@@ -39,7 +39,6 @@ const PostMenu = ({post}: IPostMenu) => {
   const isMyPost = post.userID === userId;
   const startDeletingPost = async () => {
     const response = await doDeletePost();
-    console.log(response);
   };
   const onDeletePressed = () => {
     Alert.alert('Are you sure?', 'Deleting the post is permanent', [

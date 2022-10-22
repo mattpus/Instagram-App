@@ -16,15 +16,12 @@ const ProfileScreen = () => {
   const {userId: authUserId} = useAuthContext();
 
   const userId = route.params?.userId || authUserId;
-  console.log('USER ID FROM PROFILESCREEN===> ', userId);
+
   const {data, loading, error, refetch} = useQuery<
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {variables: {id: userId}});
 
-  console.log('DATA FROM PROFILESCREEN', data);
-  const user = data?.getUser;
-  console.log('USER FROM PROFILESCREEN', user);
   if (loading) {
     return <ActivityIndicator />;
   }

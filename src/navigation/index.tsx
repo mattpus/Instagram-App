@@ -40,7 +40,6 @@ const Navigation = () => {
   );
 
   const userData = data?.getUser;
-  console.log(userData);
 
   if (user === undefined || loading) {
     return (
