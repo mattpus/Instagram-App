@@ -1,8 +1,9 @@
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Auth} from 'aws-amplify';
+import {Auth, Storage} from 'aws-amplify';
 
 import Button from '../../components/Button';
+import UserImage from '../../components/UserImage';
 import {
   EditProfileNavigationProp,
   ProfileNavigationProp,
@@ -12,25 +13,30 @@ import {User} from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
 import fonts from '../../theme/fonts';
 import colors from '../../theme/colors';
+import React, {useEffect, useState} from 'react';
 
 interface IProfileHeader {
   user: User;
 }
 
 const ProfileHeader = ({user}: IProfileHeader) => {
+  const [imageUri, setImageUri] = useState<string | null>(null);
   const {userId} = useAuthContext();
   const DEFAULT_USER_IMAGE =
     'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const navigation = useNavigation<ProfileNavigationProp>();
   navigation.setOptions({title: user?.username || 'Profile'});
+
+  useEffect(() => {
+    if (user.image) {
+      Storage.get(user.image).then(setImageUri);
+    }
+  }, [user]);
   return (
     <View style={styles.root}>
       <View style={styles.headerRow}>
         {/* Profile image */}
-        <Image
-          source={{uri: user.image || DEFAULT_USER_IMAGE}}
-          style={styles.avatar}
-        />
+        <UserImage imageKey={user.image} style={styles.avatar} />
 
         {/* Posts, followers, following number */}
         <View style={styles.numberContainer}>

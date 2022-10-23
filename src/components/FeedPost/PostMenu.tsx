@@ -1,80 +1,89 @@
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import {Alert, StyleSheet, Text} from 'react-native';
+import React from 'react';
 import {
   Menu,
-  MenuOptions,
   MenuOption,
+  MenuOptions,
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
 import Entypo from 'react-native-vector-icons/Entypo';
-import fonts from '../../theme/fonts';
 import {useMutation} from '@apollo/client';
 import {deletePost} from './queries';
-import {DeletePostMutation, DeletePostMutationVariables, Post} from '../../API';
-import {useAuthContext} from '../../contexts/AuthContext';
 import {
-  NavigationHelpersContext,
-  useNavigation,
-} from '@react-navigation/native';
+  DeleteCommentMutationVariables,
+  DeletePostMutation,
+  Post,
+} from '../../API';
+import {useAuthContext} from '../../contexts/AuthContext';
+import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
+import {Storage} from 'aws-amplify';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface IPostMenu {
   post: Post;
 }
 const PostMenu = ({post}: IPostMenu) => {
-  const navigation = useNavigation<FeedNavigationProp>();
   const [doDeletePost] = useMutation<
     DeletePostMutation,
-    DeletePostMutationVariables
-  >(deletePost, {
-    variables: {
-      input: {
-        id: post.id,
-        _version: post._version,
-      },
-    },
-  });
-
+    DeleteCommentMutationVariables
+  >(deletePost, {variables: {input: {id: post.id, _version: post._version}}});
+  const navigation = useNavigation<FeedNavigationProp>();
   const {userId} = useAuthContext();
-  const isMyPost = post.userID === userId;
+  const isMyPost = userId === post.userID;
+
   const startDeletingPost = async () => {
-    const response = await doDeletePost();
+    if (post.image) {
+      await Storage.remove(post.image);
+    }
+    if (post.video) {
+      await Storage.remove(post.video);
+    }
+    if (post.images) {
+      await Promise.all(post.images.map(img => Storage.remove(img)));
+    }
+
+    try {
+      await doDeletePost();
+    } catch (e) {
+      Alert.alert('Failed to delete post', (e as Error).message);
+    }
   };
-  const onDeletePressed = () => {
-    Alert.alert('Are you sure?', 'Deleting the post is permanent', [
+  const onDeleteOptionPressed = () => {
+    Alert.alert('Are you sure?', 'Deleting a post is permanent', [
       {
         text: 'Cancel',
         style: 'cancel',
       },
       {
-        text: 'Delete',
+        text: 'Delete post',
         style: 'destructive',
         onPress: startDeletingPost,
       },
     ]);
   };
-  const onEditPressed = () => {
+  const onEditOptionPressed = () => {
     navigation.navigate('UpdatePost', {id: post.id});
   };
 
   const insets = useSafeAreaInsets();
   return (
-    <Menu renderer={renderers.SlideInMenu} style={styles.dots}>
+    <Menu renderer={renderers.SlideInMenu} style={styles.threeDots}>
       <MenuTrigger>
-        <Entypo name="dots-three-horizontal" />
+        <Entypo name="dots-three-horizontal" size={16} />
       </MenuTrigger>
       <MenuOptions optionsContainerStyle={{paddingBottom: insets.bottom}}>
-        <MenuOption onSelect={() => Alert.alert('Reporting the post')}>
+        <MenuOption onSelect={() => Alert.alert('Reporting')}>
           <Text style={styles.optionText}>Report</Text>
         </MenuOption>
         {isMyPost && (
           <>
-            <MenuOption onSelect={onDeletePressed}>
+            <MenuOption onSelect={onDeleteOptionPressed}>
               <Text style={[styles.optionText, {color: 'red'}]}>Delete</Text>
             </MenuOption>
-            <MenuOption onSelect={onEditPressed}>
-              <Text style={styles.optionText}>Edit Post</Text>
+            <MenuOption onSelect={onEditOptionPressed}>
+              <Text style={styles.optionText}>Edit</Text>
             </MenuOption>
           </>
         )}
@@ -82,18 +91,14 @@ const PostMenu = ({post}: IPostMenu) => {
     </Menu>
   );
 };
-
-export default PostMenu;
 const styles = StyleSheet.create({
-  dots: {
+  threeDots: {
     marginLeft: 'auto',
-  },
-  options: {
-    marginBottom: 100,
   },
   optionText: {
     textAlign: 'center',
-    fontSize: fonts.size.m,
+    fontSize: 20,
     padding: 10,
   },
 });
+export default PostMenu;

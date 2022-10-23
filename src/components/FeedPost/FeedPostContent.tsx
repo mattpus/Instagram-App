@@ -5,6 +5,7 @@ import VideoPlayer from '../VideoPlayer.tsx';
 import DoublePressable from '../DoublePressable';
 import {Post} from '../../API';
 import {Storage} from 'aws-amplify';
+import {postsByDate} from '../../graphql/queries';
 
 interface IFeedPostContent {
   post: Post;
@@ -13,6 +14,8 @@ interface IFeedPostContent {
 
 const FeedPostContent = ({post, isVisible}: IFeedPostContent) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imagesUri, setImagesUri] = useState<string[] | null>(null);
+  const [videoUri, setVideoUri] = useState<string | null>(null);
 
   useEffect(() => {
     downloadMedia();
@@ -23,6 +26,12 @@ const FeedPostContent = ({post, isVisible}: IFeedPostContent) => {
       //download the image
       const uri = await Storage.get(post.image);
       setImageUri(uri);
+    } else if (post.images) {
+      const uris = await Promise.all(post.images.map(img => Storage.get(img)));
+      setImagesUri(uris);
+    } else if (post.video) {
+      const uri = await Storage.get(post.video);
+      setVideoUri(uri);
     }
   };
   if (imageUri) {
@@ -34,10 +43,10 @@ const FeedPostContent = ({post, isVisible}: IFeedPostContent) => {
         style={styles.image}
       />
     );
-  } else if (post.images) {
-    return <Carousel images={post.images} />;
-  } else if (post.video) {
-    return <VideoPlayer uri={post.video} paused={!isVisible} />;
+  } else if (imagesUri) {
+    return <Carousel images={imagesUri} />;
+  } else if (videoUri) {
+    return <VideoPlayer uri={videoUri} paused={!isVisible} />;
   }
   return (
     <View>

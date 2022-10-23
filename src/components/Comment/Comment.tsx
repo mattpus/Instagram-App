@@ -6,6 +6,7 @@ import fonts from '../../theme/fonts';
 import {IComment} from '../../types/models';
 import {Comment as CommentType} from '../../API';
 import dayjs from 'dayjs';
+import UserImage from '../UserImage';
 
 type Props = {
   comment: CommentType;
@@ -22,10 +23,7 @@ const Comment = ({comment, details = false, isNew = false}: Props) => {
   return (
     <View style={styles.comment}>
       {details && (
-        <Image
-          source={{uri: comment?.User?.image || DEFAULT_USER_IMAGE}}
-          style={styles.avatar}
-        />
+        <UserImage imageKey={comment?.User?.image} style={styles.avatar} />
       )}
 
       <View style={styles.commentContainer}>

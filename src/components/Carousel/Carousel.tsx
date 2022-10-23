@@ -15,7 +15,7 @@ type Props = {
 };
 const Carousel = ({images}: Props) => {
   const {width} = useWindowDimensions();
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(1);
 
   const viewabilityConfig: ViewabilityConfig = {
     itemVisiblePercentThreshold: 51,

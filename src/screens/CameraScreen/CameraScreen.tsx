@@ -94,6 +94,9 @@ const CameraScreen = () => {
     setIsRecording(true);
     try {
       const result = await camera.current.recordAsync(options);
+      navigation.navigate('Create', {
+        video: result.uri,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -109,14 +112,24 @@ const CameraScreen = () => {
 
   const openImageGallery = () => {
     launchImageLibrary(
-      {mediaType: 'photo'},
+      {mediaType: 'mixed', selectionLimit: 4},
       ({didCancel, errorCode, assets}) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
           if (assets.length === 1) {
+            if (assets[0].type?.startsWith('video')) {
+              navigation.navigate('Create', {
+                video: assets[0].uri,
+              });
+            } else {
+              navigation.navigate('Create', {
+                image: assets[0].uri,
+              });
+            }
+          } else if (assets.length > 1) {
+            navigation.navigate('Create', {
+              images: assets.map(asset => asset.uri as string),
+            });
           }
-          navigation.navigate('Create', {
-            image: assets[0].uri,
-          });
         }
       },
     );
@@ -131,10 +144,10 @@ const CameraScreen = () => {
   }
 
   // const navigateToCreateScreen = () => {
-  navigation.navigate('Create', {
-    video:
-      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-  });
+  // navigation.navigate('Create', {
+  //   video:
+  //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+  // });
   // };
 
   return (

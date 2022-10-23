@@ -1,4 +1,12 @@
-import {View, StyleSheet, Image, TextInput, Button, Alert} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  TextInput,
+  Button,
+  Alert,
+  Text,
+} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {CreateRouteProp, HomeStackNavigationProp} from '../../types/navigation';
@@ -25,6 +33,7 @@ const CreatePostScreen = () => {
   const {userId} = useAuthContext();
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const [doCreatePost] = useMutation<
     CreatePostMutation,
@@ -49,8 +58,12 @@ const CreatePostScreen = () => {
 
     //upload the media files to s3 and get the key
     if (image) {
-      const imageKey = await uploadMedia(image);
-      input.image = imageKey;
+      input.image = await uploadMedia(image);
+    } else if (images) {
+      const imageKeys = await Promise.all(images.map(img => uploadMedia(img)));
+      input.images = imageKeys.filter(key => key) as string[];
+    } else if (video) {
+      input.video = await uploadMedia(video);
     }
 
     try {
@@ -72,7 +85,15 @@ const CreatePostScreen = () => {
       //upload file to s3
       const imageExtension = uri.split('.')[uri.split('.').length - 1];
 
-      const s3Response = await Storage.put(`${uuid()}.${imageExtension}`, blob);
+      const s3Response = await Storage.put(
+        `${uuid()}.${imageExtension}`,
+        blob,
+        {
+          progressCallback(newProgress) {
+            setProgress(newProgress.loaded / newProgress.total);
+          },
+        },
+      );
       return s3Response.key;
     } catch (e) {
       Alert.alert('Error uploading file');
@@ -106,6 +127,13 @@ const CreatePostScreen = () => {
         title={isSubmitting ? 'Submitting...' : 'Submit'}
         onPress={onSubmit}
       />
+
+      {isSubmitting && (
+        <View style={styles.progressBarContainer}>
+          <View style={[styles.progress, {width: `${progress * 100}%`}]} />
+          <Text>Uploading {Math.floor(progress * 100)}%</Text>
+        </View>
+      )}
     </KeyboardAwareScrollView>
   );
 };
@@ -133,5 +161,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 10,
     borderRadius: 5,
+  },
+  progressBarContainer: {
+    backgroundColor: colors.lightgrey,
+    width: '100%',
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    marginVertical: 25,
+  },
+  progress: {
+    backgroundColor: colors.primary,
+    position: 'absolute',
+    height: '100%',
+
+    alignSelf: 'flex-start',
+    borderRadius: 13,
   },
 });

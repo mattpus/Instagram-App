@@ -1,5 +1,5 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import fonts from '../../theme/fonts';
 import colors from '../../theme/colors';
@@ -17,6 +17,8 @@ import dayjs from 'dayjs';
 
 import useLikeService from '../../services/LikeService';
 import FeedPostContent from './FeedPostContent';
+import {Storage} from 'aws-amplify';
+import UserImage from '../UserImage';
 
 const DEFAULT_USER_IMAGE =
   'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
@@ -28,11 +30,17 @@ interface Props {
 
 const FeedPost = ({post, isVisible}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
   const navigation = useNavigation<FeedNavigationProp>();
   const {toggleLike, isLiked} = useLikeService(post);
 
   const postLikes = post.Likes?.items.filter(like => !like?._deleted) || [];
-
+  useEffect(() => {
+    if (post?.User?.image) {
+      Storage.get(post.User.image).then(setImageUri);
+    }
+  }, [post]);
   const navigateToUser = () => {
     if (post.User) {
       navigation.navigate('UserProfile', {userId: post.User.id});
@@ -54,14 +62,7 @@ const FeedPost = ({post, isVisible}: Props) => {
   return (
     <View style={styles.post}>
       <View style={styles.header}>
-        <Image
-          source={{
-            uri: post.User?.image?.startsWith('http')
-              ? post.User?.image
-              : DEFAULT_USER_IMAGE,
-          }}
-          style={styles.avatars}
-        />
+        <UserImage imageKey={post?.User?.image} style={styles.avatars} />
         <Text onPress={navigateToUser} style={styles.userName}>
           {post.User?.username}
         </Text>

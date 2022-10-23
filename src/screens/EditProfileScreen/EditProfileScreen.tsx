@@ -17,6 +17,7 @@ import {
   DeleteUserMutationVariables,
   GetUserQuery,
   GetUserQueryVariables,
+  UpdateUserInput,
   UpdateUserMutation,
   UpdateUserMutationVariables,
   User,
@@ -28,8 +29,9 @@ import {deleteUser, getUser, updateUser, usersByUsername} from './queries';
 import {useAuthContext} from '../../contexts/AuthContext';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
 import {useNavigation} from '@react-navigation/native';
-import {Auth} from 'aws-amplify';
+import {Auth, Storage} from 'aws-amplify';
 import {DEFAULT_USER_IMAGE} from '../../conifg';
+import {v4 as uuid} from 'uuid';
 
 const URL_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -116,20 +118,33 @@ const EditProfileScreen = () => {
   }, [user, setValue]);
 
   const onSubmit = async (formData: IEditableUser) => {
-    await doUpdateUser({
-      variables: {
-        input: {
-          id: userId,
-          ...formData,
-          _version: user?._version,
-        },
-      },
-    });
+    const input: UpdateUserInput = {
+      id: userId,
+      ...formData,
+      _version: user?._version,
+    };
+    if (selectedPhoto?.uri) {
+      input.image = await uploadMedia(selectedPhoto.uri);
+    }
+    await doUpdateUser({variables: {input}});
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
   };
+  const uploadMedia = async (uri: string) => {
+    try {
+      //get the blob of the file from uri
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      //upload file to s3
+      const imageExtension = uri.split('.')[uri.split('.').length - 1];
 
+      const s3Response = await Storage.put(`${uuid()}.${imageExtension}`, blob);
+      return s3Response.key;
+    } catch (e) {
+      Alert.alert('Error uploading file');
+    }
+  };
   const confirmDelete = () => {
     Alert.alert('Are you sure?', 'Deleting your user profile is permanent', [
       {text: 'Cancel', style: 'cancel'},
