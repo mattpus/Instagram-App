@@ -10,8 +10,9 @@ import dayjs from 'dayjs';
 type Props = {
   comment: CommentType;
   details?: boolean;
+  isNew?: boolean;
 };
-const Comment = ({comment, details = false}: Props) => {
+const Comment = ({comment, details = false, isNew = false}: Props) => {
   const DEFAULT_USER_IMAGE =
     'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
   const [liked, setLiked] = useState(false);
@@ -34,6 +35,7 @@ const Comment = ({comment, details = false}: Props) => {
         </Text>
         {details && (
           <View style={styles.footer}>
+            {isNew && <Text style={styles.new}> New </Text>}
             <Text style={styles.footerText}>
               {dayjs(comment.createdAt).fromNow()}
             </Text>
@@ -70,6 +72,14 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     marginBottom: 10,
+  },
+  new: {
+    backgroundColor: colors.primary,
+    color: colors.white,
+    paddingHorizontal: 5,
+    marginRight: 5,
+    borderRadius: 5,
+    overflow: 'hidden',
   },
   footerText: {
     color: colors.grey,

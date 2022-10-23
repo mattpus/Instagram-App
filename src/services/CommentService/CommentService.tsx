@@ -5,7 +5,6 @@ import {
   CreateCommentMutationVariables,
   GetPostQuery,
   GetPostQueryVariables,
-  Post,
   UpdatePostMutation,
   UpdatePostMutationVariables,
 } from '../../API';
@@ -21,7 +20,7 @@ const useCommentService = (postId: string) => {
   const [doCreateComment] = useMutation<
     CreateCommentMutation,
     CreateCommentMutationVariables
-  >(createComment, {refetchQueries: ['CommentsByPost']});
+  >(createComment);
 
   const [doUpdatePost] = useMutation<
     UpdatePostMutation,
