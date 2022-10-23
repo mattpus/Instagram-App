@@ -9,13 +9,11 @@ import {
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import colors from '../../theme/colors';
-import DoublePressable from '../DoublePressable';
 
 type Props = {
   images: string[];
-  onDoublePress?: () => void;
 };
-const Carousel = ({images, onDoublePress = () => {}}: Props) => {
+const Carousel = ({images}: Props) => {
   const {width} = useWindowDimensions();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
@@ -34,12 +32,7 @@ const Carousel = ({images, onDoublePress = () => {}}: Props) => {
       <FlatList
         data={images}
         renderItem={({item}) => (
-          <DoublePressable onDoublePress={onDoublePress}>
-            <Image
-              source={{uri: item}}
-              style={{width: width, aspectRatio: 1}}
-            />
-          </DoublePressable>
+          <Image source={{uri: item}} style={{width: width, aspectRatio: 1}} />
         )}
         horizontal
         pagingEnabled

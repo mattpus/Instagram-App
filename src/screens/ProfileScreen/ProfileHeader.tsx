@@ -3,7 +3,10 @@ import {useNavigation} from '@react-navigation/native';
 import {Auth} from 'aws-amplify';
 
 import Button from '../../components/Button';
-import {ProfileNavigationProp} from '../../types/navigation';
+import {
+  EditProfileNavigationProp,
+  ProfileNavigationProp,
+} from '../../types/navigation';
 import {User} from '../../API';
 
 import {useAuthContext} from '../../contexts/AuthContext';

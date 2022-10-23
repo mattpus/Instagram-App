@@ -8,8 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Comment from '../Comment';
 import DoublePressable from '../DoublePressable';
-import Carousel from '../Carousel';
-import VideoPlayer from '../VideoPlayer.tsx';
+
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
 import {Post} from '../../API';
@@ -17,13 +16,14 @@ import PostMenu from './PostMenu';
 import dayjs from 'dayjs';
 
 import useLikeService from '../../services/LikeService';
+import FeedPostContent from './FeedPostContent';
 
 const DEFAULT_USER_IMAGE =
   'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/default-user-image.png';
 
 interface Props {
   post: Post;
-  isVisible?: boolean;
+  isVisible: boolean;
 }
 
 const FeedPost = ({post, isVisible}: Props) => {
@@ -51,29 +51,6 @@ const FeedPost = ({post, isVisible}: Props) => {
     setIsDescriptionExpanded(prevDescription => !prevDescription);
   };
 
-  console.log(post.nofLikes);
-  let content = null;
-  if (post.image) {
-    content = (
-      <DoublePressable onDoublePress={toggleLike}>
-        <Image
-          source={{
-            uri: post.image,
-          }}
-          style={styles.image}
-        />
-      </DoublePressable>
-    );
-  } else if (post.images) {
-    content = <Carousel images={post.images} onDoublePress={toggleLike} />;
-  } else if (post.video) {
-    content = (
-      <DoublePressable onDoublePress={toggleLike}>
-        <VideoPlayer uri={post.video} paused={!isVisible} />
-      </DoublePressable>
-    );
-  }
-
   return (
     <View style={styles.post}>
       <View style={styles.header}>
@@ -90,7 +67,11 @@ const FeedPost = ({post, isVisible}: Props) => {
         </Text>
         <PostMenu post={post} />
       </View>
-      {content}
+      {/* Content */}
+      <DoublePressable onDoublePress={toggleLike}>
+        <FeedPostContent post={post} isVisible={isVisible} />
+      </DoublePressable>
+      {/* Footer */}
       <View style={styles.footer}>
         <View style={styles.iconContainer}>
           <Pressable onPress={toggleLike}>
@@ -122,7 +103,7 @@ const FeedPost = ({post, isVisible}: Props) => {
         </View>
         {/* Likes */}
         {postLikes.length === 0 ? (
-          <Text> Be the first to like the post</Text>
+          <Text>Be the first to like the post</Text>
         ) : (
           <Text style={styles.text} onPress={navigateToLikes}>
             Liked by{' '}
@@ -147,6 +128,7 @@ const FeedPost = ({post, isVisible}: Props) => {
         <Text onPress={navigateToComments}>
           View all {post.nofComments} comments{' '}
         </Text>
+        {/* Post date */}
         <Text>{dayjs(post.createdAt).fromNow()}</Text>
         {(post.Comments?.items || []).map(
           comment => comment && <Comment key={comment.id} comment={comment} />,

@@ -1,25 +1,32 @@
 import {useMutation, useQuery} from '@apollo/client';
+import {Alert} from 'react-native';
 import {
-  UpdatePostMutation,
-  UpdatePostMutationVariables,
-  Post,
   CreateLikeMutation,
   CreateLikeMutationVariables,
   DeleteLikeMutation,
   DeleteLikeMutationVariables,
   LikesForPostByUserQuery,
   LikesForPostByUserQueryVariables,
+  Post,
+  UpdatePostMutation,
+  UpdatePostMutationVariables,
 } from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
 import {
+  createLike,
   updatePost,
   deleteLike,
-  createLike,
   likesForPostByUser,
 } from './queries';
 
 const useLikeService = (post: Post) => {
   const {userId} = useAuthContext();
+
+  const {data: usersLikeData} = useQuery<
+    LikesForPostByUserQuery,
+    LikesForPostByUserQueryVariables
+  >(likesForPostByUser, {variables: {postID: post.id, userID: {eq: userId}}});
+
   const [doUpdatePost] = useMutation<
     UpdatePostMutation,
     UpdatePostMutationVariables
@@ -38,18 +45,11 @@ const useLikeService = (post: Post) => {
     DeleteLikeMutationVariables
   >(deleteLike);
 
-  const {data: usersLikeData} = useQuery<
-    LikesForPostByUserQuery,
-    LikesForPostByUserQueryVariables
-  >(likesForPostByUser, {
-    variables: {postID: post.id, userID: {eq: userId}},
-  });
-
   const userLike = (usersLikeData?.LikesForPostByUser?.items || []).filter(
     like => !like?._deleted,
   )?.[0];
 
-  const updateNofLikes = (amount: 1 | -1) => {
+  const incrementNofLikes = (amount: 1 | -1) => {
     doUpdatePost({
       variables: {
         input: {
@@ -61,31 +61,39 @@ const useLikeService = (post: Post) => {
     });
   };
 
-  const addLike = () => {
-    doCreateLike();
-    updateNofLikes(1);
+  const onAddLike = async () => {
+    console.log(post.id, userId);
+    try {
+      const response = await doCreateLike();
+      console.log(response);
+      incrementNofLikes(1);
+    } catch (e) {
+      Alert.alert('Error adding like', (e as Error).message);
+    }
   };
-  const removeLike = () => {
+
+  const onDeleteLike = () => {
     if (!userLike) {
       return;
     }
+    // delete the user like
     doDeleteLike({
       variables: {input: {id: userLike.id, _version: userLike._version}},
     });
-    updateNofLikes(-1);
+    incrementNofLikes(-1);
   };
 
   const toggleLike = () => {
     if (userLike) {
-      addLike();
+      onDeleteLike();
     } else {
-      removeLike();
+      onAddLike();
     }
   };
 
   return {
-    isLiked: !!userLike,
     toggleLike,
+    isLiked: !!userLike,
   };
 };
 

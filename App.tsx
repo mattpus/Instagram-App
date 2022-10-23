@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/navigation';
 import Amplify from 'aws-amplify';
