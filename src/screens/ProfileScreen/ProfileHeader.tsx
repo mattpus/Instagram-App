@@ -4,10 +4,7 @@ import {Auth, Storage} from 'aws-amplify';
 
 import Button from '../../components/Button';
 import UserImage from '../../components/UserImage';
-import {
-  EditProfileNavigationProp,
-  ProfileNavigationProp,
-} from '../../types/navigation';
+import {ProfileNavigationProp} from '../../types/navigation';
 import {User} from '../../API';
 
 import {useAuthContext} from '../../contexts/AuthContext';

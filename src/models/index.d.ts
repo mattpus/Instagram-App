@@ -30,7 +30,7 @@ export declare class Comment {
 export declare class User {
   readonly id: string;
   readonly name: string;
-  readonly email: string;
+  readonly email?: string | null;
   readonly username?: string | null;
   readonly bio?: string | null;
   readonly website?: string | null;

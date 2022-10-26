@@ -46,7 +46,7 @@ const typePolicies: TypePolicies = {
 
 const Client = ({children}: Client) => {
   const {user} = useAuthContext();
-
+  console.log(user);
   const client = useMemo(() => {
     const token =
       user?.getSignInUserSession()?.getAccessToken().getJwtToken() || '';
